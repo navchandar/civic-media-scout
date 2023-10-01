@@ -12,7 +12,7 @@ def start_html():
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Civic Media Scout</title>
+        <title>Civic Media Scout Project</title>
         <meta name="description" content="Civic Media Scout is an initiative dedicated to compile and curate public contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.">
         <style>
             html,
@@ -25,134 +25,177 @@ def start_html():
             font-size: 14px;
             background-color: whitesmoke;
             }
+            
             p {
-            margin: 5px 15px
+                margin: 0.3em 1em;
             }
+
             table {
-            border-spacing: 0;
-            border-collapse: collapse;
-            empty-cells: hide;
-            width: 95%;
-            margin: 0 auto;
-            table-layout: auto
+                border-spacing: 0;
+                border-collapse: collapse;
+                empty-cells: hide;
+                width: 98%;
+                margin: 0 auto;
+                table-layout: auto;
             }
+            /* Media query for smaller screens (e.g., mobile devices) */
+            @media (max-width: 600px) {
+                table {
+                    width: 100%;
+                    font-size: 0.8em;
+                }
+                th, td {
+                    padding: 0.033em;
+                }
+            }
+
             th {
-            top: 0;
-            position: sticky;
-            padding: 2px;
-            box-sizing: border-box;
-            color: rgb(255, 255, 255) !important;
-            font-size: 13px;
-            height: 30px;
-            background-color: rgb(20, 90, 141) !important;
-            border: 0em solid rgb(204, 204, 204);
-            z-index: 1
+                top: 0;
+                position: sticky;
+                padding: 0.14em;
+                box-sizing: border-box;
+                color: #fff !important;
+                height: 2em;
+                background-color: #145a8d !important;
+                border: 0em solid rgb(204, 204, 204);
+                z-index: 1;
             }
+
             td {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100px;
-            height: auto;
-            max-height: 100px;
-            padding: 2px;
-            text-align: center;
-            font-size: 14px;
-            border: .05em solid rgb(204, 204, 204)
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 8em;
+                height: auto;
+                max-height: 5em;
+                padding: 0.14em;
+                text-align: center;
+                border: 0.0036em solid rgb(204, 204, 204);
             }
+
             table td:nth-child(1) {
-            max-width: 200px;
-            text-align: left;
-            padding: 0 5px
+                max-width: 14em;
+                text-align: left;
+                padding: 0 0.36em;
             }
+
             table td:nth-child(2) {
-            max-width: 150px;
-            text-align: left;
-            padding: 0 5px
+                max-width: 11em;
+                text-align: left;
+                padding: 0 0.36em;
             }
-            table td:nth-child(3),table td:nth-child(4),table td:nth-child(5),table td:nth-child(6),table td:nth-child(7),table td:nth-child(8),table td:nth-child(9) {
-            max-width: 120px;
-            text-align: left;
-            padding-left: 5px;
-            padding-top: 5px;
+
+            table td:nth-child(3),
+            table td:nth-child(4),
+            table td:nth-child(5),
+            table td:nth-child(6),
+            table td:nth-child(7),
+            table td:nth-child(8) {
+                max-width: 9em;
+                text-align: left;
+                padding-left: 0.33em;
+                padding-top: 0.33em;
+            }
+            table td:nth-child(8) {
+                max-width: 11em;
             }
             tr {
-            border-bottom: 1px solid #ddd;
-            padding: 5px;
-            background: #fff0;
-            background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00)
+                border-bottom: 0.07em solid #ddd;
+                padding: 0.36em;
+                background: #fff0;
+                background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00);
             }
+
             tr:hover {
-            background: #fff0;
-            background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
-            box-shadow: 0 2px 3px 0 rgb(4 128 123 / 45%);
-            background-blend-mode: screen
+                background: #fff0;
+                background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
+                box-shadow: 0 0.14em 0.21em 0 rgba(4, 128, 123, 0.45);
+                background-blend-mode: screen;
             }
+
             .hoverable {
-            position: relative;
-            text-align: center
+                position: relative;
+                text-align: center;
             }
-            .hoverable>.hoverable__tooltip {
-            display: none;
-            padding: 5px 5px;
-            margin: 5px
+
+            .hoverable > .hoverable__tooltip {
+                display: none;
+                padding: 0.33em 0.33em;
+                margin: 0.33em;
             }
-            .hoverable>.hoverable__main {
-            position: absolute;
-            white-space: pre-line;
-            color: black;
+
+            .hoverable > .hoverable__main {
+                position: absolute;
+                white-space: pre-line;
+                color: black;
             }
-            .hoverable:hover>.hoverable__tooltip {
-            display: inline;
-            position: absolute;
-            top: 1.9em;
-            left: 2em;
-            right: 2em;
-            background-color: #98fadb;
-            border: 0;
-            z-index: 99;
-            text-align: left
+
+            .hoverable:hover > .hoverable__tooltip {
+                display: inline;
+                position: absolute;
+                top: 2.5em;
+                left: 0.7em;
+                right: 1.9em;
+                background-color: #98fadb;
+                border: 0;
+                z-index: 99;
+                text-align: left;
             }
+
             h1 {
-            text-align: center;
-            font-size: 18px;
-            color: #2980b9;
-            margin: 5px 0 5px 0;
-            position: relative;
-            display: inline-block;
+                text-align: center;
+                font-size: 1.3em;
+                color: #2980b9;
+                margin: 0.36em 0 0.36em 0;
+                position: relative;
+                display: inline-block;
+                left 45%;
             }
+
             sup {
-            text-align: center;
-            font-size: 12px;
-            color: black;
-            margin: 5px 0 5px 0;
-            position: relative;
-            display: inline-block;
+                text-align: center;
+                font-size: 0.86em;
+                color: black;
+                margin: 0.36em 0 0.36em 0;
+                position: relative;
+                display: inline-block;
             }
+
             sup:hover {
-            -o-transition: .2s;
-            -ms-transition: .2s;
-            -moz-transition: .2s;
-            -webkit-transition: .2s;
-            transition: .2s;
-            text-shadow: 1px 1px 2px #888888;
+                -o-transition: 0.2s;
+                -ms-transition: 0.2s;
+                -moz-transition: 0.2s;
+                -webkit-transition: 0.2s;
+                transition: 0.2s;
+                text-shadow: 0.07em 0.07em 0.14em #888888;
             }
+
             .table-container {
-            overflow-x: auto;
-            overflow-y: scroll;
-            height: 87vh
+                overflow-x: auto;
+                overflow-y: scroll;
+                height: 87vh;
             }
+
             a {
-            text-decoration: none;
+                text-decoration: none;
             }
-            a:hover{
-            -o-transition:.2s;
-            -ms-transition:.2s;
-            -moz-transition:.2s;
-            -webkit-transition:.2s;
-            transition: .1s;
-            text-shadow: 0px 0px 1px #888;
-            text-decoration: underline;
+
+            a:hover {
+                -o-transition: 0.2s;
+                -ms-transition: 0.2s;
+                -moz-transition: 0.2s;
+                -webkit-transition: 0.2s;
+                transition: 0.2s;
+                text-shadow: 0px 0px 0.07em #888;
+                text-decoration: underline;
+            }
+
+            footer {
+                background-color: #D3D3D3;
+                color: #000;
+                padding: 0.3em;
+                text-align: center;
+                font-size: 0.8em;
             }
         </style>
     </head>
@@ -187,6 +230,7 @@ def start_html():
 
 def add_table_rows(data_rows):
     table_rows = ""
+    existing_contact_info = list()
     # Create a row using values from the data dictionary
     for data in data_rows:
         # Limit the text length and add the title attribute
@@ -199,19 +243,30 @@ def add_table_rows(data_rows):
             .replace("www.", "")
             .strip("/")
         )
+        contact_info = [
+            data.get("Twitter", ""),
+            data.get("Facebook", ""),
+            data.get("Instagram", ""),
+            data.get("YouTube", ""),
+            data.get("Phone", ""),
+            data.get("Email", ""),
+        ]
 
-        table_rows += f"""
-            <tr>
-                <td title="{page_title}">{page_title}</td>
-                <td><a href="{source_url}" title="{source_url}" target="_blank">{short_url}</a></td>
-                <td>{generate_social_links(data, "Twitter", page_title)}</td>
-                <td>{generate_social_links(data, "Facebook", page_title)}</td>
-                <td>{generate_social_links(data, "Instagram", page_title)}</td>
-                <td>{generate_social_links(data, "YouTube", page_title)}</td>
-                <td>{generate_contact_links(data, phone=True)}</td>
-                <td>{generate_contact_links(data, phone=False)}</td>
-            </tr>
-        """
+        # avoid duplicate rows of information
+        if contact_info not in existing_contact_info:
+            existing_contact_info.append(contact_info)
+            table_rows += f"""
+                <tr>
+                    <td title="{page_title}">{page_title}</td>
+                    <td><a href="{source_url}" title="{source_url}" target="_blank">{short_url}</a></td>
+                    <td>{generate_social_links(data, "Twitter", page_title)}</td>
+                    <td>{generate_social_links(data, "Facebook", page_title)}</td>
+                    <td>{generate_social_links(data, "Instagram", page_title)}</td>
+                    <td>{generate_social_links(data, "YouTube", page_title)}</td>
+                    <td>{generate_contact_links(data, phone=True)}</td>
+                    <td>{generate_contact_links(data, phone=False)}</td>
+                </tr>
+            """
     return table_rows
 
 
@@ -296,6 +351,20 @@ def end_html():
     end_html = """
         </tbody></table>
         </div><p></p>
+        <footer>
+    <!-- GitHub Source Code Link -->
+    <a href="https://github.com/navchandar/civic-media-scout" target="_blank">
+        View Source on GitHub
+    </a>
+    <!-- License Information -->
+    <span>|</span>
+    <a href="https://github.com/navchandar/civic-media-scout/blob/main/LICENSE" target="_blank">
+        License - MIT
+    </a>
+    <span>|</span>
+    <!-- Font Awesome Icons Attribution -->
+    <a href="https://fontawesome.com/v4/" target="_blank">Icons by Font Awesome</a>
+</footer>
         </body></html>
     """
     return end_html

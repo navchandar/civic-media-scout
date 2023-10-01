@@ -77,7 +77,15 @@ def is_content_type_html(url):
 # Function to extract social media links
 def extract_social_links(soup):
     social_links = {}
-    ignore_list = ["/intent/", "/sharer/", "/share?", "explore/locations", "/p/"]
+    ignore_list = [
+        "/intent/",
+        "/sharer/",
+        "/share?",
+        "/sharer.php",
+        "explore/locations",
+        "/p/",
+        "/watch?",
+    ]
     for platform, pattern in social_media_url_patterns.items():
         # Search for links containing the social media pattern
         link = soup.find("a", href=lambda href: href and pattern in href.lower())
