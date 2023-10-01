@@ -23,7 +23,7 @@ def start_html():
             display: table;
             font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
             font-size: 14px;
-            background-color: whitesmoke;
+            background-color: #f4f4f4;
             }
             
             p {
@@ -134,8 +134,8 @@ def start_html():
                 display: inline;
                 position: absolute;
                 top: 2.5em;
-                left: 0.7em;
-                right: 1.9em;
+                left: 10em;
+                right: 10em;
                 background-color: #98fadb;
                 border: 0;
                 z-index: 99;
@@ -181,11 +181,11 @@ def start_html():
             }
 
             a:hover {
-                -o-transition: 0.2s;
-                -ms-transition: 0.2s;
-                -moz-transition: 0.2s;
-                -webkit-transition: 0.2s;
-                transition: 0.2s;
+                -o-transition: 0.05s;
+                -ms-transition: 0.05s;
+                -moz-transition: 0.05s;
+                -webkit-transition: 0.05s;
+                transition: 0.05s;
                 text-shadow: 0px 0px 0.07em #888;
                 text-decoration: underline;
             }
@@ -198,6 +198,10 @@ def start_html():
                 font-size: 0.8em;
             }
         </style>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     </head>
     <body>
         <div class="hoverable">
@@ -213,14 +217,14 @@ def start_html():
         <table cellpadding="1" cellspacing="1" id="content-table">
         <thead>
             <tr>
-                <th scope="col">Page Title</th>
-                <th scope="col">Source URL</th>
-                <th scope="col">Twitter</th>
-                <th scope="col">Facebook</th>
-                <th scope="col">Instagram</th>
-                <th scope="col">Youtube</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
+                <th data-column="title" scope="col" title="Source Page Title">Page Title</th>
+                <th data-column="sourceurl" scope="col" title="Source Website URL">Source URL</th>
+                <th data-column="twitter" scope="col" title="Twitter Profile">Twitter</th>
+                <th data-column="facebook" scope="col" title="Facebook Profile">Facebook</th>
+                <th data-column="instagram" scope="col" title="Instagram Profile">Instagram</th>
+                <th data-column="youtube" scope="col" title="Youtube Channels">Youtube</th>
+                <th data-column="phone" scope="col" title="Phone Numbers">Phone</th>
+                <th data-column="email" scope="col" title="Email Addresses">Email</th>
             </tr>
         </thead>
         <tbody>
@@ -351,6 +355,11 @@ def end_html():
     end_html = """
         </tbody></table>
         </div><p></p>
+        <script>
+        $(document).ready( function () {
+            $('#content-table').DataTable();
+        } );
+        </script>
         <footer>
     <!-- GitHub Source Code Link -->
     <a href="https://github.com/navchandar/civic-media-scout" target="_blank">

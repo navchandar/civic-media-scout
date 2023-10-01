@@ -109,13 +109,14 @@ def filter_list(list_object, limiting_length=8):
 
 # Function to extract email addresses
 def extract_email_addresses(text):
-    email_pattern = (
-        r"\b[A-Za-z0-9._%+-]+(?:\s?\[dot\]\s?|\s?\.\s?|\s?)"
-        r"(?:[A-Za-z0-9._%+-]+(?:\s?\[at\]\s?|\s?\@\s?)[A-Za-z0-9.-]+\s?)"
-        r"(?:\s?\[dot\]\s?|\s?\.\s?)(?:[A-Za-z]{2,7})\b"
-    )
-    text = text.replace("\n", "\n\n").replace("[at]", "@").replace("[dot]", ".")
+    email_pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
+    # email_pattern = (
+    #     r"\b[A-Za-z0-9._%+-]+(?:\s?\[dot\]\s?|\s?\.\s?|\s?)"
+    #     r"(?:[A-Za-z0-9._%+-]+(?:\s?\[at\]\s?|\s?\@\s?)[A-Za-z0-9.-]+\s?)"
+    #     r"(?:\s?\[dot\]\s?|\s?\.\s?)(?:[A-Za-z]{2,7})\b"
+    # )
     text = text.replace(" [at] ", "@").replace(" [dot] ", ".")
+    text = text.replace("[at]", "@").replace("[dot]", ".")
     emails = re.findall(email_pattern, text)
     emails = filter_list(emails)
     ignore_list = ["webadmin", "webmaster"]
@@ -338,6 +339,6 @@ if __name__ == "__main__":
     visited_urls = set()
 
     for website in starting_urls:
-        data_rows = crawl_website(website, visited_urls, 5)
+        data_rows = crawl_website(website, visited_urls, 3)
         print(len(data_rows))
         save_json(data_rows)
