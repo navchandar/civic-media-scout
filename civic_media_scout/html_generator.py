@@ -22,7 +22,7 @@ def start_html():
             margin: 0;
             display: table;
             font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             background-color: #f4f4f4;
             }
             
@@ -51,7 +51,7 @@ def start_html():
 
             th {
                 top: 0;
-                position: sticky;
+                position: sticky !important;
                 padding: 0.14em;
                 box-sizing: border-box;
                 color: #fff !important;
@@ -211,6 +211,12 @@ def start_html():
             <span class="hoverable__tooltip">
                 <p><em>Civic Media Scout</em> is an initiative dedicated to compile and curate <em>public</em> contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.</p>
                 <p>By leveraging existing open source code and technologies, this project empowers citizens, researchers, and policymakers with a <em>centralized</em> resource for contacting a government entity. Join us in the journey to enhance civic engagement and information accessibility.</p>
+                
+                <p><strong>Disclaimer:</strong>
+                The information provided under this website is exclusively for general informational purposes only, should not be interpreted as soliciting or advertisement. The data collected and presented on this website may lack accuracy, comprehensiveness, or timeliness.
+
+                The operator(s) of this website abstain from making any representations or assurances concerning the accuracy or dependability of the information herein. We are not liable for any consequence of any action taken by the user relying on material / information provided under this website.
+                </p>
             </span>
         </div>
         <div class="table-container">
@@ -357,7 +363,9 @@ def end_html():
         </div><p></p>
         <script>
         $(document).ready( function () {
-            $('#content-table').DataTable();
+            $('#content-table').DataTable({
+                order: [[1, 'asc']]
+            });
         } );
         </script>
         <footer>

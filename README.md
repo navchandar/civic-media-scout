@@ -45,3 +45,8 @@ __Community Building:__ Supports the development of online communities intereste
  - The tool waits for 1 to 3 seconds between every URL queried
  - The script uses websites from `base_urls.txt` file and crawls each website on loop
  - The gathered information is then stored in `data.json` file
+ - The data file is then used to generate `index.html` file and hosted by [GitHub Pages](https://navchandar.github.io/civic-media-scout/)
+
+## Disclaimer
+
+The information provided under this repository is exclusively for general informational purposes only, should not be interpreted as soliciting or advertisement. The data collected and presented on this repository may lack accuracy, comprehensiveness, or timeliness. The operator(s) of this repository abstain from making any representations or assurances concerning the accuracy or dependability of the information herein. We are not liable for any consequence of any action taken by the user relying on material / information provided under this repository.
