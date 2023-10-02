@@ -28,9 +28,7 @@ jobs:
       run: |
         ls
         source .venv/bin/activate
-        cd civic_media_scout
-        ls
-        python html_generator.py
+        python civic_media_scout/html_generator.py
     - name: Commit file
       run: |
         git config --global user.name 'navchandar'
