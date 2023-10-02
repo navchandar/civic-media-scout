@@ -22,12 +22,14 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install poetry
+        poetry config virtualenvs.in-project true
         poetry install
     - name: Create html file
       run: |
+        ls
+        source .venv/bin/activate
         cd civic_media_scout
         ls
-        poetry shell
         python html_generator.py
     - name: Commit file
       run: |
