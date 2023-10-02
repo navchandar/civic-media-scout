@@ -115,6 +115,7 @@ def extract_email_addresses(text):
     #     r"(?:[A-Za-z0-9._%+-]+(?:\s?\[at\]\s?|\s?\@\s?)[A-Za-z0-9.-]+\s?)"
     #     r"(?:\s?\[dot\]\s?|\s?\.\s?)(?:[A-Za-z]{2,7})\b"
     # )
+    text = text.replace(" at nic dot in", "@nic.in")
     text = text.replace(" [at] ", "@").replace(" [dot] ", ".")
     text = text.replace("[at]", "@").replace("[dot]", ".")
     emails = re.findall(email_pattern, text)

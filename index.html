@@ -99,17 +99,6 @@
               background-blend-mode: screen;
             }
 
-            /* Media query for smaller screens (e.g., mobile devices) */
-            @media (max-width: 600px) {
-              table {
-                width: 100%;
-                font-size: 0.8em;
-              }
-              th, td {
-                padding: 0.033em;
-              }
-            }
-            
             .hoverable {
               position: relative;
               text-align: center;
@@ -133,7 +122,7 @@
               top: 2.5em;
               left: 10em;
               right: 10em;
-              background-color: #98fadb;
+              background-color: #c1e3f4;
               border: 0;
               z-index: 99;
               text-align: left;
@@ -198,7 +187,33 @@
             table th {
               outline: 0;
               -webkit-tap-highlight-color: transparent;
-            }            
+            }
+            
+            /* Media query for smaller screens (e.g., mobile devices) */
+            @media (max-width: 600px) {
+              table {
+                width: 100%;
+                font-size: 0.8em !important;
+              }
+              td {
+                padding: 0.5em 0.1em !important;
+              }
+              th {
+                padding: 1em 0em !important;
+              }
+              .hoverable:hover > .hoverable__tooltip {
+                top: 2.5em !important;
+                left: 1em !important;
+                right: 1em !important;
+              }
+              table th:nth-child(1),
+              table th:nth-child(4),
+              table th:nth-child(5),
+              table th:nth-child(6) {
+                width: 5em;
+              }
+            }
+            
         </style>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -211,8 +226,8 @@
                 <span class="hoverable__main"><sup>&epar;</sup></span>
             </h1>
             <span class="hoverable__tooltip">
-                <span><em>Civic Media Scout</em> is an initiative dedicated to compile and curate <em>public</em> contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.</span>
-                <span>By leveraging existing open source code and technologies, this project empowers citizens, researchers, and policymakers with a <em>centralized</em> resource for contacting a government entity. Join us in the journey to enhance civic engagement and information accessibility.</span>
+                <span><em>Civic Media Scout</em> is an initiative dedicated to compile and curate <em>public</em> contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.</span><br>
+                <span>By leveraging existing open source code and technologies, this project empowers citizens, researchers, and policymakers with a <em>centralized</em> resource for contacting a government entity. Join us in the journey to enhance civic engagement and information accessibility.</span><br>
                 
                 <span><strong>Disclaimer:</strong>
                 The information provided under this website is exclusively for general informational purposes only, should not be interpreted as soliciting or advertisement. The data collected and presented on this website may lack accuracy, comprehensiveness, or timeliness.
@@ -728,9 +743,9 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td><a title="0 001
-                    2374303" href="tel:0001
-2374303">0 001
+                    <td><a title="0 001
+                    2374303" href="tel:0001
+2374303">0 001
                     2374303</a><br></td>
                     <td>&nbsp;</td>
                 </tr>
