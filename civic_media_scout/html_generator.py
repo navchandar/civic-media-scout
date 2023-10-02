@@ -9,7 +9,7 @@ def start_html():
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Civic Media Scout Project</title>
@@ -149,7 +149,6 @@ def start_html():
                 margin: 0.36em 0 0.36em 0;
                 position: relative;
                 display: inline-block;
-                left 45%;
             }
 
             sup {
@@ -200,7 +199,7 @@ def start_html():
         </style>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     </head>
     <body>
@@ -209,18 +208,18 @@ def start_html():
                 <span class="hoverable__main"><sup>&epar;</sup></span>
             </h1>
             <span class="hoverable__tooltip">
-                <p><em>Civic Media Scout</em> is an initiative dedicated to compile and curate <em>public</em> contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.</p>
-                <p>By leveraging existing open source code and technologies, this project empowers citizens, researchers, and policymakers with a <em>centralized</em> resource for contacting a government entity. Join us in the journey to enhance civic engagement and information accessibility.</p>
+                <span><em>Civic Media Scout</em> is an initiative dedicated to compile and curate <em>public</em> contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.</span>
+                <span>By leveraging existing open source code and technologies, this project empowers citizens, researchers, and policymakers with a <em>centralized</em> resource for contacting a government entity. Join us in the journey to enhance civic engagement and information accessibility.</span>
                 
-                <p><strong>Disclaimer:</strong>
+                <span><strong>Disclaimer:</strong>
                 The information provided under this website is exclusively for general informational purposes only, should not be interpreted as soliciting or advertisement. The data collected and presented on this website may lack accuracy, comprehensiveness, or timeliness.
 
                 The operator(s) of this website abstain from making any representations or assurances concerning the accuracy or dependability of the information herein. We are not liable for any consequence of any action taken by the user relying on material / information provided under this website.
-                </p>
+                </span>
             </span>
         </div>
         <div class="table-container">
-        <table cellpadding="1" cellspacing="1" id="content-table">
+        <table id="content-table">
         <thead>
             <tr>
                 <th data-column="title" scope="col" title="Source Page Title">Page Title</th>
@@ -309,8 +308,7 @@ def generate_social_links(data, platform, page_title):
         print(profile_id)
         return (
             f"""<a href="{link}" title="{link}" aria-label="{platform} Link for {page_title}" """
-            f"""alt="{platform}" target="_blank">"""
-            f"""{social_media_icon[platform]}{profile_id}</a>"""
+            f"""target="_blank">{social_media_icon[platform]}{profile_id}</a>"""
         )
     else:
         return "&nbsp;"
