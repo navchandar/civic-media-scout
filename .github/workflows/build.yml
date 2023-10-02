@@ -25,10 +25,9 @@ jobs:
         poetry install
     - name: Create html file
       run: |
-        ls
         cd civic_media_scout
         ls
-        python civic_media_scout/html_generator.py
+        python html_generator.py
     - name: Commit file
       run: |
         git config --global user.name 'navchandar'
