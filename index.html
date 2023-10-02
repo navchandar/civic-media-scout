@@ -10,185 +10,195 @@
         <style>
             html,
             body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            display: table;
-            font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
-            font-size: 13px;
-            background-color: #f4f4f4;
+              height: 100%;
+              width: 100%;
+              margin: 0;
+              display: table;
+              font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
+              font-size: 13px;
+              background-color: #f4f4f4;
             }
             
             p {
-                margin: 0.3em 1em;
+              margin: 0.3em 1em;
             }
-
+            
             table {
-                border-spacing: 0;
-                border-collapse: collapse;
-                empty-cells: hide;
-                width: 98%;
-                margin: 0 auto;
-                table-layout: auto;
+              border-spacing: 0;
+              border-collapse: collapse;
+              empty-cells: hide;
+              width: 100%;
+              margin: 0 auto;
+              table-layout: fixed;
+              font-size: 1.1em;
+              line-height: 1.3em;
             }
-            /* Media query for smaller screens (e.g., mobile devices) */
-            @media (max-width: 600px) {
-                table {
-                    width: 100%;
-                    font-size: 0.8em;
-                }
-                th, td {
-                    padding: 0.033em;
-                }
-            }
-
+            
             th {
-                top: 0;
-                position: sticky !important;
-                padding: 0.14em;
-                box-sizing: border-box;
-                color: #fff !important;
-                height: 2em;
-                background-color: #145a8d !important;
-                border: 0em solid rgb(204, 204, 204);
-                z-index: 1;
+              top: 0;
+              position: sticky !important;
+              padding: 0.14em;
+              box-sizing: border-box;
+              color: #fff !important;
+              height: 2em;
+              background-color: #145a8d !important;
+              border: 0em solid rgb(204, 204, 204);
+              z-index: 1;
             }
-
+            
             td {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 8em;
-                height: auto;
-                max-height: 5em;
-                padding: 0.14em;
-                text-align: center;
-                border: 0.0036em solid rgb(204, 204, 204);
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 8em;
+              height: auto;
+              max-height: 5em;
+              padding: 0.14em;
+              text-align: center;
+              border: 0.0036em solid rgb(204, 204, 204);
             }
-
+            
             table td:nth-child(1) {
-                max-width: 14em;
-                text-align: left;
-                padding: 0 0.36em;
+              max-width: 14em;
+              text-align: left;
+              padding: 0 0.36em;
             }
-
+            
             table td:nth-child(2) {
-                max-width: 11em;
-                text-align: left;
-                padding: 0 0.36em;
+              max-width: 11em;
+              text-align: left;
+              padding: 0 0.36em;
             }
-
+            
             table td:nth-child(3),
             table td:nth-child(4),
             table td:nth-child(5),
             table td:nth-child(6),
             table td:nth-child(7),
             table td:nth-child(8) {
-                max-width: 9em;
-                text-align: left;
-                padding-left: 0.33em;
-                padding-top: 0.33em;
+              max-width: 9em;
+              text-align: left;
+              padding-left: 0.33em;
+              padding-top: 0.33em;
             }
             table td:nth-child(8) {
-                max-width: 11em;
+              max-width: 11em;
             }
+            
             tr {
-                border-bottom: 0.07em solid #ddd;
-                padding: 0.36em;
-                background: #fff0;
-                background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00);
+              border-bottom: 0.07em solid #ddd;
+              padding: 0.36em;
+              background: #fff0;
+              background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00);
             }
-
+            
             tr:hover {
-                background: #fff0;
-                background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
-                box-shadow: 0 0.14em 0.21em 0 rgba(4, 128, 123, 0.45);
-                background-blend-mode: screen;
+              background: #fff0;
+              background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
+              box-shadow: 0 0.14em 0.21em 0 rgba(4, 128, 123, 0.45);
+              background-blend-mode: screen;
             }
 
-            .hoverable {
-                position: relative;
-                text-align: center;
-            }
-
-            .hoverable > .hoverable__tooltip {
-                display: none;
-                padding: 0.33em 0.33em;
-                margin: 0.33em;
-            }
-
-            .hoverable > .hoverable__main {
-                position: absolute;
-                white-space: pre-line;
-                color: black;
-            }
-
-            .hoverable:hover > .hoverable__tooltip {
-                display: inline;
-                position: absolute;
-                top: 2.5em;
-                left: 10em;
-                right: 10em;
-                background-color: #98fadb;
-                border: 0;
-                z-index: 99;
-                text-align: left;
-            }
-
-            h1 {
-                text-align: center;
-                font-size: 1.3em;
-                color: #2980b9;
-                margin: 0.36em 0 0.36em 0;
-                position: relative;
-                display: inline-block;
-            }
-
-            sup {
-                text-align: center;
-                font-size: 0.86em;
-                color: black;
-                margin: 0.36em 0 0.36em 0;
-                position: relative;
-                display: inline-block;
-            }
-
-            sup:hover {
-                -o-transition: 0.2s;
-                -ms-transition: 0.2s;
-                -moz-transition: 0.2s;
-                -webkit-transition: 0.2s;
-                transition: 0.2s;
-                text-shadow: 0.07em 0.07em 0.14em #888888;
-            }
-
-            .table-container {
-                overflow-x: auto;
-                overflow-y: scroll;
-                height: 87vh;
-            }
-
-            a {
-                text-decoration: none;
-            }
-
-            a:hover {
-                -o-transition: 0.05s;
-                -ms-transition: 0.05s;
-                -moz-transition: 0.05s;
-                -webkit-transition: 0.05s;
-                transition: 0.05s;
-                text-shadow: 0px 0px 0.07em #888;
-                text-decoration: underline;
-            }
-
-            footer {
-                background-color: #D3D3D3;
-                color: #000;
-                padding: 0.3em;
-                text-align: center;
+            /* Media query for smaller screens (e.g., mobile devices) */
+            @media (max-width: 600px) {
+              table {
+                width: 100%;
                 font-size: 0.8em;
+              }
+              th, td {
+                padding: 0.033em;
+              }
             }
+            
+            .hoverable {
+              position: relative;
+              text-align: center;
+            }
+            
+            .hoverable > .hoverable__tooltip {
+              display: none;
+              padding: 0.33em 0.33em;
+              margin: 0.33em;
+            }
+            
+            .hoverable > .hoverable__main {
+              position: absolute;
+              white-space: pre-line
+              color: black;
+            }
+            
+            .hoverable:hover > .hoverable__tooltip {
+              display: inline;
+              position: absolute;
+              top: 2.5em;
+              left: 10em;
+              right: 10em;
+              background-color: #98fadb;
+              border: 0;
+              z-index: 99;
+              text-align: left;
+            }
+            
+            h1 {
+              text-align: center;
+              font-size: 1.3em;
+              color: #2980b9;
+              margin: 0.36em 0 0.36em 0;
+              position: relative;
+              display: inline-block;
+            }
+            
+            sup {
+              text-align: center;
+              font-size: 0.86em;
+              color: black;
+              margin: 0.36em 0 0.36em 0;
+              position: relative;
+              display: inline-block;
+            }
+            
+            sup:hover {
+              -o-transition: 0.2s;
+              -ms-transition: 0.2s;
+              -moz-transition: 0.2s;
+              -webkit-transition: 0.2s;
+              transition: 0.2s;
+              text-shadow: 0.07em 0.07em 0.14em #888888;
+            }
+            
+            .table-container {
+              overflow-x: auto;
+              overflow-y: scroll;
+              height: 87vh;
+            }
+            
+            a {
+              text-decoration: none;
+            }
+            
+            a:hover {
+              -o-transition: 0.05s;
+              -ms-transition: 0.05s;
+              -moz-transition: 0.05s;
+              -webkit-transition: 0.05s;
+              transition: 0.05s;
+              text-shadow: 0px 0px 0.07em #888;
+              text-decoration: underline;
+            }
+            
+            footer {
+              background-color: #D3D3D3;
+              color: #000;
+              padding: 0.3em;
+              text-align: center;
+              font-size: 0.8em;
+            }
+                        
+            table td,
+            table th {
+              outline: 0;
+              -webkit-tap-highlight-color: transparent;
+            }            
         </style>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -608,7 +618,7 @@
                     <td><a href="https://facebook.com/MyGovIndia/" title="https://facebook.com/MyGovIndia/" aria-label="Facebook Link for Contact Us | MyGov Rajasthan" target="_blank"><i class='fa fa-facebook fa-fw' style='color:#4267B2'></i>MyGovIndia</a></td>
                     <td><a href="https://www.instagram.com/mygovindia/" title="https://www.instagram.com/mygovindia/" aria-label="Instagram Link for Contact Us | MyGov Rajasthan" target="_blank"><i class='fa fa-instagram fa-fw' style='background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;'></i>mygovindia</a></td>
                     <td><a href="https://www.youtube.com/mygovindia/" title="https://www.youtube.com/mygovindia/" aria-label="YouTube Link for Contact Us | MyGov Rajasthan" target="_blank"><i class='fa fa-youtube-play fa-fw' style='color:#CD201F'></i>mygovindia</a></td>
-                    <td><a title="+91-9928038574" href="tel:+91-9928038574">+91-9928038574</a><br><a title="+91 9413387333" href="tel:+91 9413387333">+91 9413387333</a><br><a title="+91-7014714205" href="tel:+91-7014714205">+91-7014714205</a><br></td>
+                    <td><a title="+91-9928038574" href="tel:+91-9928038574">+91-9928038574</a><br><a title="+91 9413387333" href="tel:+919413387333">+91 9413387333</a><br><a title="+91-7014714205" href="tel:+91-7014714205">+91-7014714205</a><br></td>
                     <td><a title="chhabrasuneel@rajasthan.gov.in" href="mailto:chhabrasuneel@rajasthan.gov.in">chhabrasuneel@rajasthan.gov.in</a><br><a title="pradeepks.doit@rajasthan.gov.in" href="mailto:pradeepks.doit@rajasthan.gov.in">pradeepks.doit@rajasthan.gov.in</a><br></td>
                 </tr>
             
@@ -719,8 +729,8 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td><a title="0 001
-                    2374303" href="tel:0 001
-                    2374303">0 001
+                    2374303" href="tel:0001
+2374303">0 001
                     2374303</a><br></td>
                     <td>&nbsp;</td>
                 </tr>
