@@ -1,8 +1,5 @@
 import json
 
-from bs4 import BeautifulSoup
-
-
 def start_html():
     # Generate the starting part of HTML
     start_html = """
@@ -17,185 +14,195 @@ def start_html():
         <style>
             html,
             body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            display: table;
-            font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
-            font-size: 13px;
-            background-color: #f4f4f4;
+              height: 100%;
+              width: 100%;
+              margin: 0;
+              display: table;
+              font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
+              font-size: 13px;
+              background-color: #f4f4f4;
             }
             
             p {
-                margin: 0.3em 1em;
+              margin: 0.3em 1em;
             }
-
+            
             table {
-                border-spacing: 0;
-                border-collapse: collapse;
-                empty-cells: hide;
-                width: 98%;
-                margin: 0 auto;
-                table-layout: auto;
+              border-spacing: 0;
+              border-collapse: collapse;
+              empty-cells: hide;
+              width: 100%;
+              margin: 0 auto;
+              table-layout: fixed;
+              font-size: 1.1em;
+              line-height: 1.3em;
             }
-            /* Media query for smaller screens (e.g., mobile devices) */
-            @media (max-width: 600px) {
-                table {
-                    width: 100%;
-                    font-size: 0.8em;
-                }
-                th, td {
-                    padding: 0.033em;
-                }
-            }
-
+            
             th {
-                top: 0;
-                position: sticky !important;
-                padding: 0.14em;
-                box-sizing: border-box;
-                color: #fff !important;
-                height: 2em;
-                background-color: #145a8d !important;
-                border: 0em solid rgb(204, 204, 204);
-                z-index: 1;
+              top: 0;
+              position: sticky !important;
+              padding: 0.14em;
+              box-sizing: border-box;
+              color: #fff !important;
+              height: 2em;
+              background-color: #145a8d !important;
+              border: 0em solid rgb(204, 204, 204);
+              z-index: 1;
             }
-
+            
             td {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 8em;
-                height: auto;
-                max-height: 5em;
-                padding: 0.14em;
-                text-align: center;
-                border: 0.0036em solid rgb(204, 204, 204);
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 8em;
+              height: auto;
+              max-height: 5em;
+              padding: 0.14em;
+              text-align: center;
+              border: 0.0036em solid rgb(204, 204, 204);
             }
-
+            
             table td:nth-child(1) {
-                max-width: 14em;
-                text-align: left;
-                padding: 0 0.36em;
+              max-width: 14em;
+              text-align: left;
+              padding: 0 0.36em;
             }
-
+            
             table td:nth-child(2) {
-                max-width: 11em;
-                text-align: left;
-                padding: 0 0.36em;
+              max-width: 11em;
+              text-align: left;
+              padding: 0 0.36em;
             }
-
+            
             table td:nth-child(3),
             table td:nth-child(4),
             table td:nth-child(5),
             table td:nth-child(6),
             table td:nth-child(7),
             table td:nth-child(8) {
-                max-width: 9em;
-                text-align: left;
-                padding-left: 0.33em;
-                padding-top: 0.33em;
+              max-width: 9em;
+              text-align: left;
+              padding-left: 0.33em;
+              padding-top: 0.33em;
             }
             table td:nth-child(8) {
-                max-width: 11em;
+              max-width: 11em;
             }
+            
             tr {
-                border-bottom: 0.07em solid #ddd;
-                padding: 0.36em;
-                background: #fff0;
-                background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00);
+              border-bottom: 0.07em solid #ddd;
+              padding: 0.36em;
+              background: #fff0;
+              background-image: linear-gradient(to right, #ffffff00, #ffffff00, #ffffff00, #ffffff00);
             }
-
+            
             tr:hover {
-                background: #fff0;
-                background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
-                box-shadow: 0 0.14em 0.21em 0 rgba(4, 128, 123, 0.45);
-                background-blend-mode: screen;
+              background: #fff0;
+              background-image: linear-gradient(to right, #5ed0ff54, #55f5a84d, #37f99c54, #21b46d57);
+              box-shadow: 0 0.14em 0.21em 0 rgba(4, 128, 123, 0.45);
+              background-blend-mode: screen;
             }
 
-            .hoverable {
-                position: relative;
-                text-align: center;
-            }
-
-            .hoverable > .hoverable__tooltip {
-                display: none;
-                padding: 0.33em 0.33em;
-                margin: 0.33em;
-            }
-
-            .hoverable > .hoverable__main {
-                position: absolute;
-                white-space: pre-line;
-                color: black;
-            }
-
-            .hoverable:hover > .hoverable__tooltip {
-                display: inline;
-                position: absolute;
-                top: 2.5em;
-                left: 10em;
-                right: 10em;
-                background-color: #98fadb;
-                border: 0;
-                z-index: 99;
-                text-align: left;
-            }
-
-            h1 {
-                text-align: center;
-                font-size: 1.3em;
-                color: #2980b9;
-                margin: 0.36em 0 0.36em 0;
-                position: relative;
-                display: inline-block;
-            }
-
-            sup {
-                text-align: center;
-                font-size: 0.86em;
-                color: black;
-                margin: 0.36em 0 0.36em 0;
-                position: relative;
-                display: inline-block;
-            }
-
-            sup:hover {
-                -o-transition: 0.2s;
-                -ms-transition: 0.2s;
-                -moz-transition: 0.2s;
-                -webkit-transition: 0.2s;
-                transition: 0.2s;
-                text-shadow: 0.07em 0.07em 0.14em #888888;
-            }
-
-            .table-container {
-                overflow-x: auto;
-                overflow-y: scroll;
-                height: 87vh;
-            }
-
-            a {
-                text-decoration: none;
-            }
-
-            a:hover {
-                -o-transition: 0.05s;
-                -ms-transition: 0.05s;
-                -moz-transition: 0.05s;
-                -webkit-transition: 0.05s;
-                transition: 0.05s;
-                text-shadow: 0px 0px 0.07em #888;
-                text-decoration: underline;
-            }
-
-            footer {
-                background-color: #D3D3D3;
-                color: #000;
-                padding: 0.3em;
-                text-align: center;
+            /* Media query for smaller screens (e.g., mobile devices) */
+            @media (max-width: 600px) {
+              table {
+                width: 100%;
                 font-size: 0.8em;
+              }
+              th, td {
+                padding: 0.033em;
+              }
             }
+            
+            .hoverable {
+              position: relative;
+              text-align: center;
+            }
+            
+            .hoverable > .hoverable__tooltip {
+              display: none;
+              padding: 0.33em 0.33em;
+              margin: 0.33em;
+            }
+            
+            .hoverable > .hoverable__main {
+              position: absolute;
+              white-space: pre-line
+              color: black;
+            }
+            
+            .hoverable:hover > .hoverable__tooltip {
+              display: inline;
+              position: absolute;
+              top: 2.5em;
+              left: 10em;
+              right: 10em;
+              background-color: #98fadb;
+              border: 0;
+              z-index: 99;
+              text-align: left;
+            }
+            
+            h1 {
+              text-align: center;
+              font-size: 1.3em;
+              color: #2980b9;
+              margin: 0.36em 0 0.36em 0;
+              position: relative;
+              display: inline-block;
+            }
+            
+            sup {
+              text-align: center;
+              font-size: 0.86em;
+              color: black;
+              margin: 0.36em 0 0.36em 0;
+              position: relative;
+              display: inline-block;
+            }
+            
+            sup:hover {
+              -o-transition: 0.2s;
+              -ms-transition: 0.2s;
+              -moz-transition: 0.2s;
+              -webkit-transition: 0.2s;
+              transition: 0.2s;
+              text-shadow: 0.07em 0.07em 0.14em #888888;
+            }
+            
+            .table-container {
+              overflow-x: auto;
+              overflow-y: scroll;
+              height: 87vh;
+            }
+            
+            a {
+              text-decoration: none;
+            }
+            
+            a:hover {
+              -o-transition: 0.05s;
+              -ms-transition: 0.05s;
+              -moz-transition: 0.05s;
+              -webkit-transition: 0.05s;
+              transition: 0.05s;
+              text-shadow: 0px 0px 0.07em #888;
+              text-decoration: underline;
+            }
+            
+            footer {
+              background-color: #D3D3D3;
+              color: #000;
+              padding: 0.3em;
+              text-align: center;
+              font-size: 0.8em;
+            }
+                        
+            table td,
+            table th {
+              outline: 0;
+              -webkit-tap-highlight-color: transparent;
+            }            
         </style>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -293,7 +300,9 @@ def generate_contact_links(data, phone=True):
         rows = ""
         contact_count = len(contact_list)
         for contact in contact_list[:3]:
-            rows += f'<a title="{contact}" href="{uri}{contact}">{contact}</a><br>'
+            # remove space in href links
+            link = contact.replace(" ", "")
+            rows += f'<a title="{contact}" href="{uri}{link}">{contact}</a><br>'
         if contact_count > 3:
             remaining = contact_count - 3
             rows += f"and {remaining} more...<br>"
