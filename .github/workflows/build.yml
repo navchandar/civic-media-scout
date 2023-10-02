@@ -27,6 +27,7 @@ jobs:
       run: |
         cd civic_media_scout
         ls
+        poetry shell
         python html_generator.py
     - name: Commit file
       run: |
