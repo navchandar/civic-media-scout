@@ -24,7 +24,11 @@ jobs:
         pip install poetry
         poetry install
     - name: Create html file
-      run: python /civic_media_scout/html_generator.py
+      run: |
+        ls
+        cd civic_media_scout
+        ls
+        python civic_media_scout/html_generator.py
     - name: Commit file
       run: |
         git config --global user.name 'navchandar'
