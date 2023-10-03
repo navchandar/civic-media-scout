@@ -14,6 +14,7 @@ This tool utilizes the following open source packages:
  - [requests](https://pypi.org/project/requests/) - to query a website and download text/html
  - [beautifulsoup4](https://pypi.org/project/beautifulsoup4/) - to parse the html and extract information
  - [tldextract](https://pypi.org/project/tldextract/) - to distinguish URL's subdomain, domain and suffix
+ - [DataTables](https://datatables.net/) - advanced table sorting, searching and pagination capabilities
 
 To run this script, execute the below commands on the shell
 ```shell
