@@ -274,6 +274,23 @@ def start_html():
               -webkit-tap-highlight-color: transparent;
             }
             
+            .twitter_color{
+              color: #00acee !important;
+            }
+            .facebook_color{
+              color: #4267B2 !important;
+            }
+            .instagram_color{
+              background: radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);
+              background-clip: border-box;
+              background-clip: text;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            }
+            .youtube_color{
+              color: #CD201F !important;
+            }
+            
             /* Media query for smaller screens (e.g., mobile devices) */
             @media (max-width: 600px) {
               table {
@@ -462,10 +479,10 @@ def get_profile_id(link):
 
 
 social_media_icon = {
-    "Twitter": "<i class='fa fa-twitter fa-fw' style='color:#00acee'></i>",
-    "Facebook": "<i class='fa fa-facebook fa-fw' style='color:#4267B2'></i>",
-    "Instagram": "<i class='fa fa-instagram fa-fw' style='background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;'></i>",
-    "YouTube": "<i class='fa fa-youtube-play fa-fw' style='color:#CD201F'></i>",
+    "Twitter": "<i class='fa fa-twitter fa-fw twitter_color'></i>",
+    "Facebook": "<i class='fa fa-facebook fa-fw facebook_color'></i>",
+    "Instagram": "<i class='fa fa-instagram fa-fw instagram_color'></i>",
+    "YouTube": "<i class='fa fa-youtube-play fa-fw youtube_color'></i>",
 }
 
 
