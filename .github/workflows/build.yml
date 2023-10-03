@@ -29,9 +29,13 @@ jobs:
         ls
         source .venv/bin/activate
         python civic_media_scout/html_generator.py
-    - name: Commit file
-      run: |
-        git config --global user.name 'navchandar'
-        git config --global user.email '12165092+navchandar@users.noreply.github.com'
-        git commit -am "Automated HTML Build"
-        git push
+    - name: Git Push
+      uses: github-actions-x/commit@v2.9
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        push-branch: 'gh-pages'
+        commit-message: 'Automated HTML Build'
+        force-add: 'true'
+        files: index.html
+        name: navchandar
+        email: 12165092+navchandar@users.noreply.github.com 
