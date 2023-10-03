@@ -85,6 +85,10 @@ def extract_social_links(soup):
         "explore/locations",
         "/p/",
         "/watch?",
+        "facebook.com/#",
+        "twitter.com/#",
+        "instagram.com/#",
+        "youtube.com/#",
     ]
     for platform, pattern in social_media_url_patterns.items():
         # Search for links containing the social media pattern
@@ -340,6 +344,6 @@ if __name__ == "__main__":
     visited_urls = set()
 
     for website in starting_urls:
-        data_rows = crawl_website(website, visited_urls, 3)
+        data_rows = crawl_website(website, visited_urls, 5)
         print(len(data_rows))
         save_json(data_rows)

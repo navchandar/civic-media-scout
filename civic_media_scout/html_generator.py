@@ -13,6 +13,22 @@ def start_html():
         <title>Civic Media Scout Project</title>
         <meta name="description" content="Civic Media Scout is an initiative dedicated to compile and curate public contact information from government websites. Our aim is to gather and present publicly accessible data, including comprehensive social media profiles and essential contact details, in an accessible and user-friendly manner.">
         <style>
+        :root {
+          --darkbg:#232224;
+          --darkt: #dbd7db;
+          --lightbg: #f4f3f3;
+          --lightt: #141414;
+          
+          --toggleHeight: 16em;
+          --toggleWidth: 30em;
+          --toggleBtnRadius: 10em;
+
+          --bgColor--night: #423966;
+          --toggleBtn-bgColor--night: var(--bgColor--night);
+          --mooncolor: #e8fafc;
+          --bgColor--day: #9ee3fb;
+          --toggleBtn-bgColor--day: var(--bgColor--day);
+        }
             html,
             body {
               height: 100%;
@@ -21,9 +37,72 @@ def start_html():
               display: table;
               font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Geneva, Verdana, sans-serif;
               font-size: 13px;
-              background-color: #f4f4f4;
             }
-            
+            body{
+                transition: all .2s ease-in-out;
+                background: var(--darkbg);
+                color: var(--darkt);
+            }
+            .light{
+              background: var(--lightbg);
+              color: var(--lightt);
+            }
+            .tdnn {
+              margin: 0 auto;
+              font-size: 15%;
+              position: absolute;
+              top: 3em;
+              right: 15em;
+              display: inline-block;
+              height: var(--toggleHeight);
+              width: var(--toggleWidth);
+              border-radius: var(--toggleHeight);
+              transition: all 500ms ease-in-out;
+              background: var(--bgColor--night);
+            }
+            .day{
+              background: #FFBF71;
+            }
+            .moon {
+              position: absolute;
+              display: block;
+              border-radius: 50%;
+              transition: all 400ms ease-in-out;
+              
+              top: 3em;
+              left: 3em;
+              transform: rotate(-75deg);
+              width: var(--toggleBtnRadius);
+              height: var(--toggleBtnRadius);
+              background: var(--bgColor--night);
+              box-shadow: 
+                3em 2.5em 0 0em var(--mooncolor) inset,
+                rgba(255, 255, 255, 0.1) 0em -7em 0 -4.5em,
+                rgba(255, 255, 255, 0.1) 3em 7em 0 -4.5em,
+                rgba(255, 255, 255, 0.1) 2em 13em 0 -4em,
+                rgba(255, 255, 255, 0.1) 6em 2em 0 -4.1em,
+                rgba(255, 255, 255, 0.1) 8em 8em 0 -4.5em,
+                rgba(255, 255, 255, 0.1) 6em 13em 0 -4.5em,
+                rgba(255, 255, 255, 0.1) -4em 7em 0 -4.5em,
+                rgba(255, 255, 255, 0.1) -1em 10em 0 -4.5em;
+            }
+            .sun {
+              top: 4.5em;
+              left: 18em;
+              transform: rotate(0deg);
+              width: 7em;
+              height: 7em;
+              background: #fff;
+              box-shadow: 3em 3em 0 5em #fff inset,
+                0 -5em 0 -2.7em #fff,
+                3.5em -3.5em 0 -3em #fff,
+                5em 0 0 -2.7em #fff,
+                3.5em 3.5em 0 -3em #fff,
+                0 5em 0 -2.7em #fff,
+                -3.5em 3.5em 0 -3em #fff,
+                -5em 0 0 -2.7em #fff,
+                -3.5em -3.5em 0 -3em #fff;
+            }
             p {
               margin: 0.3em 1em;
             }
@@ -105,14 +184,16 @@ def start_html():
             }
 
             .hoverable {
-              position: relative;
               text-align: center;
+              max-width: fit-content;
+              margin: 0 auto;
             }
             
             .hoverable > .hoverable__tooltip {
               display: none;
               padding: 0.33em 0.33em;
               margin: 0.33em;
+              background-color: #2980b9;
             }
             
             .hoverable > .hoverable__main {
@@ -127,7 +208,6 @@ def start_html():
               top: 2.5em;
               left: 10em;
               right: 10em;
-              background-color: #c1e3f4;
               border: 0;
               z-index: 99;
               text-align: left;
@@ -217,6 +297,11 @@ def start_html():
               table th:nth-child(6) {
                 width: 5em;
               }
+              .tdnn {
+                font-size: 10%;
+                top: 10em;
+                right: 20em;
+              }
             }
             
         </style>
@@ -225,7 +310,8 @@ def start_html():
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     </head>
-    <body>
+    <body class="light">
+        <div style="margin: 0 auto;">
         <div class="hoverable">
             <h1>Civic Media Scout
                 <span class="hoverable__main"><sup>&epar;</sup></span>
@@ -240,6 +326,10 @@ def start_html():
                 The operator(s) of this website abstain from making any representations or assurances concerning the accuracy or dependability of the information herein. We are not liable for any consequence of any action taken by the user relying on material / information provided under this website.
                 </span>
             </span>
+        </div>
+         <div class="tdnn day">
+          <div class="moon sun"></div>
+        </div>
         </div>
         <div class="table-container">
         <table id="content-table">
@@ -390,6 +480,12 @@ def end_html():
                 order: [[1, 'asc']]
             });
         } );
+        
+        $('.tdnn').click(function () {
+          $("body").toggleClass('light');
+          $(".moon").toggleClass('sun');
+          $(".tdnn").toggleClass('day');
+        });
         </script>
         <footer>
     <!-- GitHub Source Code Link -->
