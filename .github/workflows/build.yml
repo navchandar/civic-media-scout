@@ -30,7 +30,9 @@ jobs:
         source .venv/bin/activate
         python civic_media_scout/html_generator.py
         git stash
-        git checkout gh-pages
+        git remote update
+        git fetch 
+        git checkout --track origin/gh-pages
         git stash pop
     - name: Git Push
       uses: github-actions-x/commit@v2.9
