@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import random
@@ -14,6 +15,9 @@ from urllib3.exceptions import InsecureRequestWarning
 
 # Suppress warning from urllib3 during request
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+
+# Initialize parser
+parser = argparse.ArgumentParser()
 
 header = {
     "accept-encoding": "gzip, deflate",
@@ -338,6 +342,17 @@ def crawl_website(url, visited_urls, max_depth=2, data=[]):
 
 
 if __name__ == "__main__":
+    parser.add_argument(
+        "-d",
+        "--max_depth",
+        type=int,
+        default=3,
+        help="The depth of crawling needed from each website. Higher the depth, longer the runtime. (default: 3)",
+    )
+    args = parser.parse_args()
+    max_depth = args.max_depth
+
+    # Get base urls from txt file
     base_urls = "./civic_media_scout/base_urls.txt"
     with open(base_urls, "r", encoding="utf-8") as file:
         starting_urls = [line.strip() for line in file]
@@ -346,6 +361,6 @@ if __name__ == "__main__":
     visited_urls = set()
 
     for website in starting_urls:
-        data_rows = crawl_website(website, visited_urls, 5)
+        data_rows = crawl_website(website, visited_urls, max_depth)
         print(len(data_rows))
         save_json(data_rows)
