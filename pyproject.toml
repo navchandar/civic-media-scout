@@ -10,7 +10,7 @@ packages = [{include = "civic_media_scout"}]
 python = "^3.10"
 requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
-tldextract = "^3.6.0"
+tldextract = "^5.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
