@@ -475,8 +475,14 @@ def get_profile_id(link):
         # facebook has pages and fref
         profile_id = remove_lead_trail_slash(profile_id.replace("pages", "", 1))
         profile_id = profile_id.split("?fref=")[0]
-        # twitter has ?s=
+        # twitter has ?s=  and lang and status
         profile_id = profile_id.split("?s=")[0]
+        profile_id = profile_id.split("?lang=")[0]
+        profile_id = profile_id.split("/status/")[0]
+        profile_id = profile_id.split("?ref_src=")[0]
+        
+        # instagram has ?hl= 
+        profile_id = profile_id.split("?hl=")[0]
 
         profile_id = remove_lead_trail_slash(profile_id)
     return profile_id

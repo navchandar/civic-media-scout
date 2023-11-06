@@ -97,6 +97,8 @@ def extract_social_links(soup):
         "youtube.com/#",
         "/login",
         "/embed/",
+        "profile.php",
+        "/hashtag/"
     ]
     for platform, pattern in social_media_url_patterns.items():
         # Search for links containing the social media pattern
@@ -205,7 +207,7 @@ def save_data_from(soup, url, data):
     except:
         title = urlparse(url).netloc
     title = title.replace("\r\n", " ").replace("\n", " ").replace("  ", " ")
-    title = title.strip().strip("|").strip("/").strip().replace("  ", " ")
+    title = title.strip().strip("|").strip("/").strip("-").strip().replace("  ", " ")
     if (not title) or ("" == title):
         title = urlparse(url).netloc
 
