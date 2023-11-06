@@ -49,7 +49,9 @@ def extract_html(url):
             url, verify=False, timeout=20, headers=header, stream=False
         )
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
+        # override encoding by real educated guess as provided by chardet
+        response.encoding = response.apparent_encoding
+        soup = BeautifulSoup(response.content.decode("utf-8","ignore"), "html.parser")
         return soup
     except requests.exceptions.RequestException as e:
         print(f"Error loading url {url}: {e}")

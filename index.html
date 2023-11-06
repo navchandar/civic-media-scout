@@ -1,13 +1,8 @@
-import json
 
-
-def start_html():
-    # Generate the starting part of HTML
-    start_html = """
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Civic Media Scout Project</title>
@@ -364,135 +359,7 @@ def start_html():
             </tr>
         </thead>
         <tbody>
-    """
-    return start_html
-
-
-def add_table_rows(data_rows):
-    table_rows = ""
-    existing_contact_info = list()
-    # Create a row using values from the data dictionary
-    for data in data_rows:
-        # Limit the text length and add the title attribute
-        page_title = data.get("Page Title", "None")
-        source_url = data.get("Source URL", "None")
-        short_url = (
-            data.get("Source URL", "None")
-            .replace("https:", "")
-            .replace("http:", "")
-            .replace("www.", "")
-            .strip("/")
-        )
-        contact_info = [
-            data.get("Twitter", ""),
-            data.get("Facebook", ""),
-            data.get("Instagram", ""),
-            data.get("YouTube", ""),
-            data.get("Phone", ""),
-            data.get("Email", ""),
-        ]
-
-        # avoid duplicate rows of information
-        if contact_info not in existing_contact_info:
-            existing_contact_info.append(contact_info)
-            table_rows += f"""
-                <tr>
-                    <td title="{page_title}">{page_title}</td>
-                    <td><a href="{source_url}" title="{source_url}" target="_blank">{short_url}</a></td>
-                    <td>{generate_social_links(data, "Twitter", page_title)}</td>
-                    <td>{generate_social_links(data, "Facebook", page_title)}</td>
-                    <td>{generate_social_links(data, "Instagram", page_title)}</td>
-                    <td>{generate_social_links(data, "YouTube", page_title)}</td>
-                    <td>{generate_contact_links(data, phone=True)}</td>
-                    <td>{generate_contact_links(data, phone=False)}</td>
-                </tr>
-            """
-    return table_rows
-
-
-def generate_contact_links(data, phone=True):
-    contact_list = []
-    uri = ""
-    if phone:
-        uri = "tel:"
-        contact_list = data.get("Phone", [])
-    else:
-        uri = "mailto:"
-        contact_list = data.get("Email", [])
-
-    if contact_list:
-        rows = ""
-        contact_count = len(contact_list)
-        for contact in contact_list[:3]:
-            # remove space in href links
-            link = contact.replace(" ", "")
-            rows += f'<a title="{contact}" href="{uri}{link}">{contact}</a><br>'
-        if contact_count > 3:
-            remaining = contact_count - 3
-            rows += f"and {remaining} more...<br>"
-        return rows
-    else:
-        return "&nbsp;"
-
-
-def generate_social_links(data, platform, page_title):
-    if link := data.get(platform):
-        profile_id = get_profile_id(link)
-        print(profile_id)
-        if profile_id:
-            return (
-                f"""<a href="{link}" title="{link}" aria-label="{platform} Link for {page_title}" """
-                f"""target="_blank">{social_media_icon[platform]}{profile_id}</a>"""
-            )
-        else:
-            return "&nbsp;"
-    else:
-        return "&nbsp;"
-
-
-def remove_lead_trail_slash(s):
-    s = s.strip()
-    if s.startswith("/"):
-        s = s[1:]
-    if s.endswith("/"):
-        s = s[:-1]
-    s = s.strip()
-    return s
-
-
-def get_profile_id(link):
-    profile_id = None
-    remove_list = ("c/", "user", "channel", "pages/", "/playlists", "?s=", "?fref=")
-    if len(link.split(".com/")) > 1:
-        profile_id = ".com/".join(link.split(".com/")[1:])
-        if profile_id.strip().startswith(remove_list):
-            profile_id = remove_lead_trail_slash(profile_id)
-            # youtube has c/ user/ channel/
-            profile_id = remove_lead_trail_slash(profile_id.replace("c/", "", 1))
-            profile_id = remove_lead_trail_slash(profile_id.replace("user", "", 1))
-            profile_id = remove_lead_trail_slash(profile_id.replace("channel", "", 1))
-        profile_id = remove_lead_trail_slash(profile_id.replace("playlists", "", 1))
-        # facebook has pages and fref
-        profile_id = remove_lead_trail_slash(profile_id.replace("pages", "", 1))
-        profile_id = profile_id.split("?fref=")[0]
-        # twitter has ?s=
-        profile_id = profile_id.split("?s=")[0]
-
-        profile_id = remove_lead_trail_slash(profile_id)
-    return profile_id
-
-
-social_media_icon = {
-    "Twitter": "<i class='fa fa-twitter fa-fw twitter_color'></i>",
-    "Facebook": "<i class='fa fa-facebook fa-fw facebook_color'></i>",
-    "Instagram": "<i class='fa fa-instagram fa-fw instagram_color'></i>",
-    "YouTube": "<i class='fa fa-youtube-play fa-fw youtube_color'></i>",
-}
-
-
-def end_html():
-    # Generate the ending part of HTML
-    end_html = """
+    
         </tbody></table>
         </div><p></p>
         <script>
@@ -523,25 +390,4 @@ def end_html():
     <a href="https://fontawesome.com/v4/" target="_blank">Icons by Font Awesome</a>
 </footer>
         </body></html>
-    """
-    return end_html
-
-
-def read_json_file(filename: str):
-    with open(filename, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def main():
-    data_rows = read_json_file("data.json")
-    table_rows = add_table_rows(data_rows)
-    # Combine the HTML parts
-    html_string = start_html() + table_rows + end_html()
-
-    # Write the HTML content to a file
-    with open("index.html", "w", encoding="utf-8") as html_file:
-        html_file.write(html_string)
-
-
-if __name__ == "__main__":
-    main()
+    
