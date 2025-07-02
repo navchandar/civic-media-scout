@@ -286,63 +286,67 @@ def crawl_more(
     visited_urls,
     max_depth,
     data,
-    filtered_links,
-):
-    # Find and crawl linked websites with different domains but same TLD
+    filtered_links):
+    """
+    Crawl additional links with the same TLD but different domains.
+    """
     base_domain = extract_tld(url)
-    for absolute_url in filtered_links:
-        parsed_link = urlparse(absolute_url)
+
+    for link in filtered_links:
+        if not link.startswith("http") or link in visited_urls:
+            continue
+
         # Check if the link has a different domain but the same TLD
-        if parsed_link and extract_tld(absolute_url) == base_domain:
-            absolute_url = str(absolute_url)
-            if absolute_url.startswith("http") and absolute_url not in visited_urls:
-                # Add in visited URLs to avoid loading site if not html
-                visited_urls.add(absolute_url)
+        if extract_tld(link) != base_domain:
+            continue
 
-                # ignore files/other content and only extract html
-                if is_content_type_html(absolute_url) and max_depth > 1:
-                    print(
-                        absolute_url,
-                        "data count =",
-                        len(data),
-                        "visited count =",
-                        len(visited_urls),
-                    )
-                    crawl_website(absolute_url, visited_urls, max_depth - 1, data)
+        # Add in visited URLs to avoid loading site if not html
+        visited_urls.add(link)
+
+        if is_content_type_html(link) and max_depth > 1:
+            print(f"Crawling: {link} | Data: {len(data)} | Visited: {len(visited_urls)}")
+            crawl_website(link, visited_urls, max_depth - 1, data)
 
 
-# Function to crawl a website and its linked websites
 def crawl_website(url, visited_urls, max_depth=2, data=[]):
-    if max_depth == 0:
-        return
+    """
+    Crawl a website and recursively follow links with the same TLD.
+    """
+    if data is None:
+        data = []
+
+    if max_depth == 0 or url in visited_urls:
+        return data
+
     try:
-        print("url:", url)
+        print(f"Visiting: {url}")
         soup = extract_html(url)
-        if soup:
-            # Add in visited URLs to avoid loading site again
-            visited_urls.add(url)
-
-            data = save_data_from(soup, url, data)
-
-            # Deduplicate and filter the links
-            new_links = extract_other_links(soup, url, visited_urls)
-            print("Found URLs =", len(new_links))
-
-            crawl_more(
-                url,
-                visited_urls,
-                max_depth,
-                data,
-                new_links,
-            )
-
-        else:
+        if not soup:
             time.sleep(random.uniform(0.5, 1.0))
+            return data
+
+        visited_urls.add(url)
+        data = save_data_from(soup, url, data)
+
+        new_links = extract_other_links(soup, url, visited_urls)
+        print(f"Found {len(new_links)} new URLs")
+
+        crawl_more(url, visited_urls, max_depth, data, new_links)
 
     except Exception as e:
         print(f"Error crawling {url}: {e}")
         traceback.print_exc()
+
     return data
+
+
+def get_base_urls():
+    """Get base urls from txt file"""
+    base_urls = "./civic_media_scout/base_urls.txt"
+    with open(base_urls, "r", encoding="utf-8") as file:
+        starting_urls = [line.strip() for line in file]
+    print(f"Found {len(starting_urls)} links in base_urls.txt file")
+    return starting_urls
 
 
 if __name__ == "__main__":
@@ -356,15 +360,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     max_depth = args.max_depth
 
-    # Get base urls from txt file
-    base_urls = "./civic_media_scout/base_urls.txt"
-    with open(base_urls, "r", encoding="utf-8") as file:
-        starting_urls = [line.strip() for line in file]
-
     # Use set to avoid revisiting the same URLs
     visited_urls = set()
-
-    for website in starting_urls:
+    for website in get_base_urls():
         data_rows = crawl_website(website, visited_urls, max_depth)
         print(len(data_rows))
         save_json(data_rows)
