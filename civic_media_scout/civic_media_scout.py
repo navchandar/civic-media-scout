@@ -15,6 +15,7 @@ from urllib3.exceptions import InsecureRequestWarning
 
 # Suppress warning from urllib3 during request
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+json_file = "data.json"
 
 # Initialize parser
 parser = argparse.ArgumentParser()
@@ -30,11 +31,13 @@ header = {
     "sec-fetch-user": "?1",
     "Referer": "https://www.google.com/",
     "upgrade-insecure-requests": "1",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
 }
+
 
 # Define patterns for social media URLs
 social_media_url_patterns = {
+    "X Corp": "x.com",
     "Twitter": "twitter.com",
     "Facebook": "facebook.com",
     "Instagram": "instagram.com",
@@ -51,7 +54,7 @@ def extract_html(url):
         response.raise_for_status()
         # override encoding by real educated guess as provided by chardet
         response.encoding = response.apparent_encoding
-        soup = BeautifulSoup(response.content.decode("utf-8","ignore"), "html.parser")
+        soup = BeautifulSoup(response.content.decode("utf-8", "ignore"), "html.parser")
         return soup
     except requests.exceptions.RequestException as e:
         print(f"Error loading url {url}: {e}")
@@ -98,7 +101,8 @@ def extract_social_links(soup):
         "/login",
         "/embed/",
         "profile.php",
-        "/hashtag/"
+        "/hashtag/",
+        "invites/contact"
     ]
     for platform, pattern in social_media_url_patterns.items():
         # Search for links containing the social media pattern
@@ -243,7 +247,7 @@ def extract_tld(url):
     return ext.suffix
 
 
-def extract_main_domain(url):
+def extract_main_domain(url) -> str:
     # Use tldrextract to get the domain from url
     extracted = tldextract.extract(url)
     return f"{extracted.domain}.{extracted.suffix}"
@@ -258,7 +262,7 @@ def sort_json(json_content):
 
 # Save dict list into a JSON file
 def save_json(json_content, indent=4):
-    json_file = "data.json"
+    
     existing_data = {}
     if os.path.exists(json_file):
         with open(json_file, "r", encoding="utf-8") as f:
@@ -281,12 +285,27 @@ def save_json(json_content, indent=4):
     print("Output saved to:", json_file)
 
 
-def crawl_more(
-    url,
-    visited_urls,
-    max_depth,
-    data,
-    filtered_links):
+def sort_saved_json(indent=4):
+    # Load JSON file
+    with open("data.json", "r", encoding="utf-8") as f:
+        raw_data = json.load(f)
+        print(len(raw_data))
+
+    # Sort by domain and then by Source URL
+    sorted_data = sorted(
+        raw_data,
+        key=lambda x: (
+            f"{extract_main_domain(x['Source URL'])}",
+            x["Source URL"],
+        ),
+    )
+    with open(json_file, "w", encoding="utf-8") as f:
+        json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
+    print("Output saved to:", json_file)
+
+
+
+def crawl_more(url, visited_urls, max_depth, data, filtered_links):
     """
     Crawl additional links with the same TLD but different domains.
     """
@@ -304,7 +323,9 @@ def crawl_more(
         visited_urls.add(link)
 
         if is_content_type_html(link) and max_depth > 1:
-            print(f"Crawling: {link} | Data: {len(data)} | Visited: {len(visited_urls)}")
+            print(
+                f"Crawling: {link} | Data: {len(data)} | Visited: {len(visited_urls)}"
+            )
             crawl_website(link, visited_urls, max_depth - 1, data)
 
 
@@ -349,7 +370,7 @@ def get_base_urls():
     return starting_urls
 
 
-if __name__ == "__main__":
+def main():
     parser.add_argument(
         "-d",
         "--max_depth",
@@ -366,3 +387,8 @@ if __name__ == "__main__":
         data_rows = crawl_website(website, visited_urls, max_depth)
         print(len(data_rows))
         save_json(data_rows)
+
+
+if __name__ == "__main__":
+    main()
+    sort_saved_json()
