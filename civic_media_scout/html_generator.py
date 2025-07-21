@@ -275,7 +275,9 @@ def start_html():
           color: #000;
           padding: 0.3em;
           text-align: center;
-          font-size: 0.8em;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
         }
 
         table td,
@@ -563,9 +565,8 @@ def end_html():
   </script>
   <footer>
     <!-- GitHub Source Code Link -->
-    <span>Civic Media Scout | Made with ❤️ |</span>
     <a href="https://github.com/navchandar/civic-media-scout" target="_blank">
-      GitHub
+      Source: GitHub
     </a>
     <!-- License Information -->
     <span>|</span>
