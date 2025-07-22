@@ -1,7 +1,9 @@
 import json
+
 import tldextract
 
 json_file = "data.json"
+
 
 def start_html():
     # Generate the starting part of HTML
@@ -82,6 +84,16 @@ def add_table_rows(data_rows):
     # Create a row using values from the data dictionary
     for data in data_rows:
         page_title = data.get("Page Title", "None")
+        page_title = (
+            page_title.replace("https:", "")
+            .replace("http:", "")
+            .replace("www.", "")
+            .replace('"', "")
+            .replace(".::", "")
+            .replace("::.", "")
+            .replace("-", "")
+            .strip()
+        )
         source_url = data.get("Source URL", "None")
         short_url = (
             data.get("Source URL", "None")
@@ -148,7 +160,7 @@ def generate_contact_links(data, phone=True):
 def generate_social_links(data, platform, page_title):
     if link := data.get(platform):
         profile_id = get_profile_id(link)
-        print(F"{platform} : {profile_id}")
+        print(f"{platform} : {profile_id}")
         if profile_id:
             return (
                 f"""<a href="{link}" title="{link}" aria-label="{platform} Link for {page_title}" """
@@ -267,6 +279,8 @@ body {
     font-family: "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Geneva,
         Verdana, sans-serif;
     font-size: 13px;
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll !important;
 }
 
 body {
@@ -284,7 +298,7 @@ body {
     margin: 0 auto;
     font-size: 15%;
     position: absolute;
-    top: 3em;
+    top: 6em;
     right: 15em;
     display: inline-block;
     height: var(--toggleHeight);
@@ -512,6 +526,24 @@ footer {
     bottom: 0;
     width: 100%;
 }
+.dataTables_length {
+    position: fixed;
+    left: 20px;
+    top: 16px;
+    font-size: 1.2em;
+}
+.dataTables_filter {
+    position: fixed;
+    right: 200px;
+    top: 16px;
+    font-size: 1.2em;
+}
+.dataTables_filter input{
+    width: 300px;
+}
+.dataTables_filter input:hover, .dataTables_wrapper .dataTables_length select{
+    border: 2px solid #6c6c6c;
+}
 
 table td,
 table th {
@@ -585,11 +617,21 @@ table th {
         top: 10em;
         right: 20em;
     }
+    
+    .dataTables_length, .dataTables_filter {
+        position: static;
+        font-size: 0.8em;
+    }
+    .dataTables_filter input{
+        width: 200px;
+    }
+
 }
     """
     with open("style.css", "w", encoding="utf-8") as css_file:
         css_file.write(css_content)
     print("style.css file saved")
+
 
 def make_js():
     # JS content for initializing DataTable and toggling theme
@@ -656,7 +698,7 @@ def sort_saved_json(indent=4):
     with open(json_file, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 
-    print(f'Found {len(raw_data)} values in {json_file}')
+    print(f"Found {len(raw_data)} values in {json_file}")
 
     # Sort by domain and then by Source URL
     sorted_data = sorted(
@@ -669,7 +711,6 @@ def sort_saved_json(indent=4):
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
     print("Output saved to:", json_file)
-
 
 
 def main():

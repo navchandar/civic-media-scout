@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import json
 import os
 import random
@@ -6,16 +7,22 @@ import re
 import time
 import traceback
 from datetime import datetime, timedelta
+from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
+import aiohttp
 import requests
 import tldextract
+from aiohttp import ClientSession, ClientTimeout
 from bs4 import BeautifulSoup
 from urllib3.exceptions import InsecureRequestWarning
 
 # Suppress warning from urllib3 during request
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 json_file = "data.json"
+
+# Semaphore to limit concurrent requests
+semaphore = asyncio.Semaphore(10)
 
 # Initialize parser
 parser = argparse.ArgumentParser()
@@ -102,7 +109,7 @@ def extract_social_links(soup):
         "/embed/",
         "profile.php",
         "/hashtag/",
-        "invites/contact"
+        "invites/contact",
     ]
     for platform, pattern in social_media_url_patterns.items():
         # Search for links containing the social media pattern
@@ -197,10 +204,8 @@ def extract_other_links(soup, main_url, visited_urls):
 
 
 # Gather contact information from given webpage and store them in the data list
-def save_data_from(soup, url, data):
-    extracted_data = dict()
-    extracted_data["Source URL"] = url
-
+async def save_data_from(soup, url, data):
+    extracted_data = {"Source URL": url}
     # Extract social media links, phone numbers and emails
     social_links = extract_social_links(soup)
     phones = extract_telephone_numbers(soup.text)
@@ -210,18 +215,12 @@ def save_data_from(soup, url, data):
         title = soup.title.string.strip()
     except:
         title = urlparse(url).netloc
-    title = title.replace("\r\n", " ").replace("\n", " ").replace("  ", " ")
-    title = title.strip().strip("|").strip("/").strip("-").strip().replace("  ", " ")
-    if (not title) or ("" == title):
-        title = urlparse(url).netloc
+    title = re.sub(r"\s+", " ", title).strip(" |/-")
+    extracted_data["Page Title"] = title or urlparse(url).netloc
+    print("Page Title:", extracted_data["Page Title"])
 
-    print("Page Title:", title)
-    extracted_data["Page Title"] = title
-
-    # save the data to output only if any contact info found
     if social_links or phones or emails:
-        if social_links:
-            extracted_data = {**extracted_data, **social_links}
+        extracted_data.update(social_links)
         if phones:
             extracted_data["Phone"] = phones
         if emails:
@@ -232,12 +231,15 @@ def save_data_from(soup, url, data):
             datetime.utcnow() + timedelta(hours=5, minutes=30)
         )
         print(extracted_data)
-        print("")
         data.append(extracted_data)
+        
+        # Incremental save data when possible
+        async with asyncio.Lock():
+            with open(json_file, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
 
         # Sleep to not overload server with requests
-        time.sleep(random.uniform(1.5, 2.5))
-    return data
+        await asyncio.sleep(random.uniform(1, 2.5))
 
 
 def extract_tld(url):
@@ -255,7 +257,8 @@ def extract_main_domain(url) -> str:
 
 def sort_json(json_content):
     sorted_json_list = sorted(
-        json_content, key=lambda x: (
+        json_content,
+        key=lambda x: (
             f"{extract_main_domain(x['Source URL'])}",
             x["Source URL"],
         ),
@@ -265,7 +268,6 @@ def sort_json(json_content):
 
 # Save dict list into a JSON file
 def save_json(json_content, indent=4):
-    
     existing_data = {}
     if os.path.exists(json_file):
         with open(json_file, "r", encoding="utf-8") as f:
@@ -288,7 +290,7 @@ def save_json(json_content, indent=4):
     print("Output saved to:", json_file)
 
 
-def crawl_more(url, visited_urls, max_depth, data, filtered_links):
+def old_crawl_more(url, visited_urls, max_depth, data, filtered_links):
     """
     Crawl additional links with the same TLD but different domains.
     """
@@ -312,7 +314,7 @@ def crawl_more(url, visited_urls, max_depth, data, filtered_links):
             crawl_website(link, visited_urls, max_depth - 1, data)
 
 
-def crawl_website(url, visited_urls, max_depth=2, data=[]):
+def old_crawl_website(url, visited_urls, max_depth=2, data=[]):
     """
     Crawl a website and recursively follow links with the same TLD.
     """
@@ -344,16 +346,54 @@ def crawl_website(url, visited_urls, max_depth=2, data=[]):
     return data
 
 
-def get_base_urls():
+async def crawl_more(session, url, visited_urls, max_depth, data, filtered_links):
+    base_domain = extract_tld(url)
+    tasks = []
+    for link in filtered_links:
+        if not link.startswith("http") or link in visited_urls:
+            continue
+        if extract_tld(link) != base_domain:
+            continue
+        visited_urls.add(link)
+        tasks.append(crawl_website(session, link, visited_urls, max_depth - 1, data))
+    await asyncio.gather(*tasks)
+
+
+async def crawl_website(session, url, visited_urls, max_depth=2, data=[]):
+    if max_depth == 0 or url in visited_urls:
+        return
+    print(f"Visiting: {url}")
+    visited_urls.add(url)
+    soup = await fetch_html(session, url)
+    if not soup:
+        await asyncio.sleep(random.uniform(0.5, 1.0))
+        return
+    await save_data_from(soup, url, data)
+    new_links = extract_other_links(soup, url, visited_urls)
+    print(f"Found {len(new_links)} new URLs")
+    await crawl_more(session, url, visited_urls, max_depth, data, new_links)
+
+
+async def fetch_html(session, url):
+    async with semaphore:
+        try:
+            async with session.get(url, headers=header, ssl=False) as response:
+                if "text/html" in response.headers.get("Content-Type", ""):
+                    text = await response.text()
+                    return BeautifulSoup(text, "html.parser")
+        except Exception as e:
+            print(f"Error loading url {url}: {e}")
+    return None
+
+
+async def get_base_urls():
     """Get base urls from txt file"""
     base_urls = "./civic_media_scout/base_urls.txt"
     with open(base_urls, "r", encoding="utf-8") as file:
-        starting_urls = [line.strip() for line in file]
-    print(f"Found {len(starting_urls)} links in base_urls.txt file")
-    return starting_urls
+        return [line.strip() for line in file if line.strip()]
 
 
-def main():
+def old_main():
     parser.add_argument(
         "-d",
         "--max_depth",
@@ -372,5 +412,26 @@ def main():
         save_json(data_rows)
 
 
+async def main_async(max_depth):
+    visited_urls = set()
+    data = []
+    base_urls = await get_base_urls()
+    print(f"Found {len(base_urls)} links in base_urls.txt file")
+
+    async with aiohttp.ClientSession(timeout=ClientTimeout(total=30)) as session:
+        tasks = [
+            crawl_website(session, url, visited_urls, max_depth, data)
+            for url in base_urls
+        ]
+        await asyncio.gather(*tasks)
+    save_json(data)
+    print(f"Saved {len(data)} records to {json_file}")
+
+
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-d", "--max_depth", type=int, default=3, help="Depth of crawling (default: 3)"
+    )
+    args = parser.parse_args()
+    asyncio.run(main_async(args.max_depth))
