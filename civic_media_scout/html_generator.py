@@ -194,20 +194,35 @@ def get_profile_id(link):
             profile_id = remove_lead_trail_slash(profile_id.replace("user", "", 1))
             profile_id = remove_lead_trail_slash(profile_id.replace("channel", "", 1))
         profile_id = remove_lead_trail_slash(profile_id.replace("playlists", "", 1))
+        profile_id = profile_id.split("?view_as=")[0]
+        profile_id = profile_id.split("?si=")[0]
+        profile_id = profile_id.split("?feature=")[0]
+        profile_id = profile_id.split("?locale=")[0]
+
         # facebook has pages and fref
         profile_id = remove_lead_trail_slash(profile_id.replace("pages", "", 1))
         profile_id = profile_id.split("?ref=")[0]
         profile_id = profile_id.split("?fref=")[0]
+        profile_id = profile_id.split("?mibextid=")[0]
+        profile_id = profile_id.split("?ti=")[0]
+        profile_id = profile_id.split("?extid=")[0]
+        profile_id = profile_id.split("?modal=")[0]
+
         # twitter has ?s=  and lang and status
         profile_id = profile_id.split("?s=")[0]
         profile_id = profile_id.split("?lang=")[0]
         profile_id = profile_id.split("/status/")[0]
         profile_id = profile_id.split("?ref_src=")[0]
+        profile_id = profile_id.split("?t=")[0]
+        profile_id = profile_id.split("?itsct=")[0]
+        profile_id = profile_id.split("?mx=")[0]
+        profile_id = profile_id.split("?original_referer=")[0]
 
         profile_id = profile_id.split("?utm_medium=")[0]
 
         # instagram has ?hl=
         profile_id = profile_id.split("?hl=")[0]
+        profile_id = profile_id.split("?igshid=")[0]
 
         profile_id = remove_lead_trail_slash(profile_id)
     return profile_id
@@ -451,8 +466,13 @@ tr:hover {
     display: none;
     padding: 0.75em 0.75em;
     margin: 0.33em;
-    background-color: #93d4ff;
+    background-color: darkcyan;
     border-radius: 15px;
+    font-size: larger;
+}
+
+.light .hoverable > .hoverable__tooltip {
+    background-color: mediumturquoise;
 }
 
 .hoverable > .hoverable__main {
@@ -702,6 +722,7 @@ def sort_saved_json(indent=4):
     for item in raw_data:
         if ("X Corp" in item) and item["X Corp"]:
             item["Twitter"] = item["X Corp"]
+            del item["X Corp"]
 
     # Sort by domain and then by Source URL
     sorted_data = sorted(

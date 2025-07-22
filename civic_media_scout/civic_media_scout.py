@@ -44,7 +44,7 @@ header = {
 
 # Define patterns for social media URLs
 social_media_url_patterns = {
-    "X Corp": "x.com",
+    "X Corp": "//x.com",
     "Twitter": "twitter.com",
     "Facebook": "facebook.com",
     "Instagram": "instagram.com",
