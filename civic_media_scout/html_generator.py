@@ -699,6 +699,9 @@ def sort_saved_json(indent=4):
         raw_data = json.load(f)
 
     print(f"Found {len(raw_data)} values in {json_file}")
+    for item in raw_data:
+        if ("X Corp" in item) and item["X Corp"]:
+            item["Twitter"] = item["X Corp"]
 
     # Sort by domain and then by Source URL
     sorted_data = sorted(
@@ -708,6 +711,7 @@ def sort_saved_json(indent=4):
             x["Source URL"],
         ),
     )
+
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
     print("Output saved to:", json_file)
