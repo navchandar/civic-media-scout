@@ -595,6 +595,16 @@ def make_js():
     # JS content for initializing DataTable and toggling theme
     js_content = """
     // script.js
+
+    // Set data table pagination button count based on screen width
+    if (window.innerWidth < 576) {
+        $.fn.DataTable.ext.pager.numbers_length = 3; // Small screens
+    } else if (window.innerWidth < 768) {
+        $.fn.DataTable.ext.pager.numbers_length = 7; // Medium screens
+    } else {
+        $.fn.DataTable.ext.pager.numbers_length = 10; // Large screens
+    }
+
     $(document).ready(function() {
         $('#content-table').DataTable({
             order: [], // Use existing order of the table
