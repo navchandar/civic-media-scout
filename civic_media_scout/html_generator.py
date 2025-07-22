@@ -481,7 +481,7 @@ tr:hover {
     color: black;
 }
 
-.hoverable:hover > .hoverable__tooltip {
+.hoverable.active > .hoverable__tooltip {
     display: inline;
     position: absolute;
     top: 2.5em;
@@ -619,7 +619,8 @@ table th {
         padding: 1em 0em !important;
     }
 
-    .hoverable:hover > .hoverable__tooltip {
+    
+    .hoverable.active > .hoverable__tooltip {
         top: 2.5em !important;
         left: 1em !important;
         right: 1em !important;
@@ -660,11 +661,11 @@ def make_js():
 
     // Set data table pagination button count based on screen width
     if (window.innerWidth < 576) {
-        $.fn.DataTable.ext.pager.numbers_length = 3; // Small screens
+        $.fn.DataTable.ext.pager.numbers_length = 5; // Small screens
     } else if (window.innerWidth < 768) {
-        $.fn.DataTable.ext.pager.numbers_length = 7; // Medium screens
+        $.fn.DataTable.ext.pager.numbers_length = 8; // Medium screens
     } else {
-        $.fn.DataTable.ext.pager.numbers_length = 10; // Large screens
+        $.fn.DataTable.ext.pager.numbers_length = 13; // Large screens
     }
 
     $(document).ready(function() {
@@ -686,7 +687,32 @@ def make_js():
         $("body").toggleClass('light');
         $(".moon").toggleClass('sun');
         $(".tdnn").toggleClass('day');
-    });"""
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".hoverable").forEach(function (el) {
+            el.addEventListener("click", function (e) {
+                // Close other tooltips
+                document.querySelectorAll(".hoverable").forEach(function (other) {
+                    if (other !== el) other.classList.remove("active");
+                });
+
+                // Toggle current tooltip
+                el.classList.toggle("active");
+            });
+        });
+
+        // Optional: Close tooltip when clicking outside
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest(".hoverable")) {
+                document.querySelectorAll(".hoverable").forEach(function (el) {
+                    el.classList.remove("active");
+                });
+            }
+        });
+    });
+    """
 
     with open("script.js", "w", encoding="utf-8") as js_file:
         js_file.write(js_content)
