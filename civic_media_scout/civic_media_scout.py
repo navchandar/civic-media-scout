@@ -255,7 +255,10 @@ def extract_main_domain(url) -> str:
 
 def sort_json(json_content):
     sorted_json_list = sorted(
-        json_content, key=lambda x: extract_main_domain(x["Source URL"])
+        json_content, key=lambda x: (
+            f"{extract_main_domain(x['Source URL'])}",
+            x["Source URL"],
+        ),
     )
     return sorted_json_list
 
@@ -283,26 +286,6 @@ def save_json(json_content, indent=4):
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(updated_data, f, ensure_ascii=False, indent=indent)
     print("Output saved to:", json_file)
-
-
-def sort_saved_json(indent=4):
-    # Load JSON file
-    with open("data.json", "r", encoding="utf-8") as f:
-        raw_data = json.load(f)
-        print(len(raw_data))
-
-    # Sort by domain and then by Source URL
-    sorted_data = sorted(
-        raw_data,
-        key=lambda x: (
-            f"{extract_main_domain(x['Source URL'])}",
-            x["Source URL"],
-        ),
-    )
-    with open(json_file, "w", encoding="utf-8") as f:
-        json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
-    print("Output saved to:", json_file)
-
 
 
 def crawl_more(url, visited_urls, max_depth, data, filtered_links):
@@ -391,4 +374,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    sort_saved_json()

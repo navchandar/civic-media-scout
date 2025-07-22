@@ -1,5 +1,6 @@
 import json
 
+json_file = "data.json"
 
 def start_html():
     # Generate the starting part of HTML
@@ -633,8 +634,29 @@ def read_json_file(filename: str):
         return json.load(f)
 
 
+def sort_saved_json(indent=4):
+    # Load JSON file
+    with open(json_file, "r", encoding="utf-8") as f:
+        raw_data = json.load(f)
+        print(len(raw_data))
+
+    # Sort by domain and then by Source URL
+    sorted_data = sorted(
+        raw_data,
+        key=lambda x: (
+            f"{extract_main_domain(x['Source URL'])}",
+            x["Source URL"],
+        ),
+    )
+    with open(json_file, "w", encoding="utf-8") as f:
+        json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
+    print("Output saved to:", json_file)
+
+
+
 def main():
-    data_rows = read_json_file("data.json")
+    sort_saved_json()
+    data_rows = read_json_file(json_file)
     table_rows = add_table_rows(data_rows)
     # Combine the HTML parts
     make_css()

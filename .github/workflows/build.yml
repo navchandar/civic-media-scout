@@ -34,6 +34,6 @@ jobs:
           git config --global user.email "12165092+navchandar@users.noreply.github.com"
           git config --global user.name "navchandar"
           git checkout -b gh-pages
-          git add .
-          git commit -m "Automated HTML Build" index.html
+          git add -A
+          git commit -m "Automated HTML Build" || echo "No changes to commit"
           git push --force origin gh-pages
