@@ -1,4 +1,5 @@
 import json
+import tldextract
 
 json_file = "data.json"
 
@@ -634,11 +635,18 @@ def read_json_file(filename: str):
         return json.load(f)
 
 
+def extract_main_domain(url) -> str:
+    # Use tldrextract to get the domain from url
+    extracted = tldextract.extract(url)
+    return f"{extracted.domain}.{extracted.suffix}"
+
+
 def sort_saved_json(indent=4):
     # Load JSON file
     with open(json_file, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
-        print(len(raw_data))
+
+    print(f'Found {len(raw_data)} values in {json_file}')
 
     # Sort by domain and then by Source URL
     sorted_data = sorted(
