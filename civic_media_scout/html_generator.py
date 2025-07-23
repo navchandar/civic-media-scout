@@ -661,7 +661,7 @@ table th {
     footer {
         font-size: 0.8em;
     }
-    
+
     .link-text {
         display: none;
     }
@@ -794,7 +794,7 @@ def clean_json_dict(data):
         return decode_if_garbled(data)
 
 
-def sort_saved_json(indent=4):
+def sort_saved_json(json_file=json_file, indent=4):
     # Load JSON file
     with open(json_file, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
