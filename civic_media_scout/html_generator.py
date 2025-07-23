@@ -163,8 +163,9 @@ def generate_social_links(data, platform, page_title):
         print(f"{platform} : {profile_id}")
         if profile_id:
             return (
-                f"""<a href="{link}" title="{link}" aria-label="{platform} Link for {page_title}" """
-                f"""target="_blank">{social_media_icon[platform]}{profile_id}</a>"""
+                f"""<a href="{link}" title="{link}" aria-label="{platform} link of {page_title}" """
+                f"""target="_blank">{social_media_icon[platform]}"""
+                f"""<span class="link-text">{profile_id}</span></a>"""
             )
         else:
             return "&nbsp;"
@@ -522,7 +523,9 @@ sup:hover {
 .table-container {
     overflow-x: auto;
     overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; 
     height: 89vh;
+    width: 100%;
 }
 
 a {
@@ -560,6 +563,7 @@ footer {
 }
 .dataTables_filter input{
     width: 300px;
+    height: 25px;
 }
 .dataTables_filter input:hover, .dataTables_wrapper .dataTables_length select{
     border: 2px solid #6c6c6c;
@@ -604,6 +608,11 @@ table th {
     width: 100%;
 }
 
+.link-text {
+    display: inline;
+}
+
+
 /* Media query for smaller screens (e.g., mobile devices) */
 @media (max-width: 600px) {
     table {
@@ -644,7 +653,16 @@ table th {
         font-size: 0.8em;
     }
     .dataTables_filter input{
-        width: 200px;
+        width: 250px;
+        height: 25px;
+    }
+
+    footer {
+        font-size: 0.8em;
+    }
+
+    .link-text {
+        display: none;
     }
 
 }
