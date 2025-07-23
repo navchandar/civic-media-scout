@@ -1,5 +1,6 @@
 import json
 
+import chardet
 import tldextract
 
 json_file = "data.json"
@@ -660,9 +661,16 @@ table th {
     footer {
         font-size: 0.8em;
     }
-
+    
     .link-text {
         display: none;
+    }
+
+    table td:nth-child(3),
+    table td:nth-child(4),
+    table td:nth-child(5),
+    table td:nth-child(6) {
+        text-align: center;
     }
 
 }
@@ -757,20 +765,51 @@ def extract_main_domain(url) -> str:
     return f"{extracted.domain}.{extracted.suffix}"
 
 
+def detect_encoding(byte_data):
+    result = chardet.detect(byte_data)
+    return result["encoding"]
+
+
+def decode_if_garbled(value):
+    COMMON_ENCODINGS = ["latin1", "windows-1252", "iso-8859-1", "utf-8"]
+    if isinstance(value, str):
+        for encoding in COMMON_ENCODINGS:
+            try:
+                # interpret the string as if it was mis-decoded
+                byte_data = value.encode(encoding)
+                detected = detect_encoding(byte_data)
+                if detected and detected.lower() != encoding:
+                    return byte_data.decode(detected)
+            except Exception:
+                continue
+    return value
+
+
+def clean_json_dict(data):
+    if isinstance(data, dict):
+        return {k: clean_json_dict(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [clean_json_dict(item) for item in data]
+    else:
+        return decode_if_garbled(data)
+
+
 def sort_saved_json(indent=4):
     # Load JSON file
     with open(json_file, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 
     print(f"Found {len(raw_data)} values in {json_file}")
-    for item in raw_data:
+    cleaned_json = clean_json_dict(raw_data)
+
+    for item in cleaned_json:
         if ("X Corp" in item) and item["X Corp"]:
             item["Twitter"] = item["X Corp"]
             del item["X Corp"]
 
     # Sort by domain and then by Source URL
     sorted_data = sorted(
-        raw_data,
+        cleaned_json,
         key=lambda x: (
             f"{extract_main_domain(x['Source URL'])}",
             x["Source URL"],

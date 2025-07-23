@@ -12,6 +12,7 @@ requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
 tldextract = "^5.0.0"
 aiohttp = "^3.12.14"
+chardet = "^5.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
