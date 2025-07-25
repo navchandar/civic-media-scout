@@ -815,6 +815,12 @@ def sort_saved_json(json_file=json_file, indent=4):
             x["Source URL"],
         ),
     )
+    
+    for social in social_media_icon.keys():
+        for item in sorted_data:
+            if link:= item.get(social):
+                link = link.strip("\r\n").strip("\n").strip()
+                item[social] = link
 
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(sorted_data, f, ensure_ascii=False, indent=indent)
