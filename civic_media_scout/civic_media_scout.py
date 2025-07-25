@@ -6,7 +6,7 @@ import random
 import re
 import time
 import traceback
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -205,6 +205,8 @@ def extract_other_links(soup, main_url, visited_urls):
 
 # Gather contact information from given webpage and store them in the data list
 async def save_data_from(soup, url, data):
+    if not url.endswith("/"):
+        url = url + "/"
     extracted_data = {"Source URL": url}
     # Extract social media links, phone numbers and emails
     social_links = extract_social_links(soup)
@@ -228,15 +230,14 @@ async def save_data_from(soup, url, data):
 
         # Store last update time in IST
         extracted_data["Last Update"] = str(
-            datetime.utcnow() + timedelta(hours=5, minutes=30)
+            datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
         )
         print(extracted_data)
         data.append(extracted_data)
-        
+
         # Incremental save data when possible
         async with asyncio.Lock():
-            with open(json_file, "w", encoding="utf-8") as f:
-                json.dump(data, f, indent=2, ensure_ascii=False)
+            save_json(data)
 
         # Sleep to not overload server with requests
         await asyncio.sleep(random.uniform(1, 2.5))
@@ -266,25 +267,36 @@ def sort_json(json_content):
     return sorted_json_list
 
 
+def filter_keys(d, exclude=["Last Update"]):
+    return {k: v for k, v in d.items() if k not in exclude}
+
+
 # Save dict list into a JSON file
 def save_json(json_content, indent=4):
     existing_data = {}
+
+    # Load and index existing data
     if os.path.exists(json_file):
         with open(json_file, "r", encoding="utf-8") as f:
             existing = json.load(f)
             existing = sort_json(existing)
-            # Create a dictionary with "Source URL" as keys
             existing_data = {item["Source URL"]: item for item in existing}
 
-    # Update the dictionary with new data
+    # Check if new data introduces any changes
+    updated = False
     for new_item in json_content:
         source_url = new_item["Source URL"]
-        existing_data[source_url] = new_item
+        if (source_url not in existing_data) or (
+            filter_keys(existing_data[source_url]) != filter_keys(new_item)
+        ):
+            existing_data[source_url] = new_item
+            updated = True
 
-    # Convert the updated dictionary back to a list
-    updated_data = list(existing_data.values())
-    updated_data = sort_json(updated_data)
+    if not updated:
+        return
 
+    # Save only if there are updates
+    updated_data = sort_json(list(existing_data.values()))
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(updated_data, f, ensure_ascii=False, indent=indent)
     print("Output saved to:", json_file)
@@ -362,21 +374,22 @@ async def crawl_more(session, url, visited_urls, max_depth, data, filtered_links
 async def crawl_website(session, url, visited_urls, max_depth=2, data=[]):
     if max_depth == 0 or url in visited_urls:
         return
-    print(f"Visiting: {url}")
     visited_urls.add(url)
     soup = await fetch_html(session, url)
     if not soup:
         await asyncio.sleep(random.uniform(0.5, 1.0))
         return
     await save_data_from(soup, url, data)
-    new_links = extract_other_links(soup, url, visited_urls)
-    print(f"Found {len(new_links)} new URLs")
-    await crawl_more(session, url, visited_urls, max_depth, data, new_links)
+    if max_depth > 1:
+        new_links = extract_other_links(soup, url, visited_urls)
+        print(f"Found {len(new_links)} new URLs")
+        await crawl_more(session, url, visited_urls, max_depth, data, new_links)
 
 
 async def fetch_html(session, url):
     async with semaphore:
         try:
+            print(f"Visiting: {url}")
             async with session.get(url, headers=header, ssl=False) as response:
                 if "text/html" in response.headers.get("Content-Type", ""):
                     text = await response.text()
