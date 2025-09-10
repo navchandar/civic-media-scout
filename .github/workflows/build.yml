@@ -34,7 +34,18 @@ jobs:
       run: |
           git config --global user.email "12165092+navchandar@users.noreply.github.com"
           git config --global user.name "navchandar"
+          
+          # Backup before switching branches
+          cp -r public/domains ../public_domains_temp
+
+          # Fetch and checkout gh-pages branch
+          git fetch origin gh-pages
           git checkout -b gh-pages
+          
+          # Replace domains folder with newly generated files
+          rm -rf public/domains
+          cp -r ../public_domains_temp public/domains
+
           git add -A
           git commit -m "Automated HTML Build" || echo "No changes to commit"
           git push --force origin gh-pages
