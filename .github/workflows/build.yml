@@ -28,6 +28,7 @@ jobs:
       run: |
         ls
         source .venv/bin/activate
+        python civic_media_scout/json_split.py
         python civic_media_scout/html_generator.py
     - name: Git Push changes
       run: |
