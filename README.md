@@ -48,6 +48,28 @@ __Community Building:__ Supports the development of online communities intereste
  - The gathered information is then stored in `data.json` file
  - The data file is then used to generate `index.html` file and hosted by [GitHub Pages](https://navchandar.github.io/civic-media-scout/)
 
-## Disclaimer
+## Legal Disclaimer
 
-The information provided under this repository is exclusively for general informational purposes only, should not be interpreted as soliciting or advertisement. The data collected and presented on this repository may lack accuracy, comprehensiveness, or timeliness. The operator(s) of this repository abstain from making any representations or assurances concerning the accuracy or dependability of the information herein. We are not liable for any consequence of any action taken by the user relying on material / information provided under this repository.
+Civic Media Scout is a civic technology initiative that compiles and curates publicly accessible contact information from official government websites. The information presented herein is intended **solely for non-commercial purposes**, including academic research, public interest, civic engagement, transparency, and accessibility. **Any commercial use, replication, or monetization of this data is strictly prohibited.**
+
+### Data Sources and Processing 
+
+All data processed and displayed by this project is:
+
+ - Publicly available and sourced from official government websites or platforms.
+ - Factual in nature, including contact details and social media links, which are generally considered non-copyrightable.
+ - Processed using open-source tools with deliberate throttling (1–3 seconds between requests) to avoid undue load on public servers.
+ - This project operates under the exemption provisions of the [Digital Personal Data Protection Act, 2023](https://en.wikipedia.org/wiki/Digital_Personal_Data_Protection_Act,_2023), specifically:
+   - **Section 3(3)(b):** Processing is conducted under the exemption for personal data made publicly available (i) voluntarily by the Data Principal or (ii) made public under a legal obligation
+   - **Section 7 (Legitimate Use):** Processing is limited to legitimate uses such as public interest, transparency, and civic engagement, and does not involve the collection or processing of Sensitive Personal Data as defined under relevant regulations.
+
+### No Warranty and Limitation of Liability
+
+The information provided does not constitute solicitation, advertisement, or endorsement of any individual, institution, or government entity. While efforts are made to ensure accuracy, completeness, and timeliness, the data is provided **"AS IS" and without warranty** of any kind, express or implied. Users are advised to exercise discretion and verify information independently before acting upon it. The maintainers shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages, including loss of data or profit, arising from the use or inability to use the information provided. 
+
+
+### Takedown and Redressal Mechanism
+
+This project acts in good faith. If any individual or government entity finds that the published information is inaccurate, non-public, or wishes to have their details removed from this public compilation, they may [raise an issue on this GitHub repository](https://github.com/navchandar/civic-media-scout/issues). We are committed to reviewing and addressing all valid requests promptly.
+ 
+
