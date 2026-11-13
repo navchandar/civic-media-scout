@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "civic-media-scout"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["navchandar <12165092+navchandar@users.noreply.github.com>"]
 readme = "README.md"
 packages = [{include = "civic_media_scout"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
 tldextract = "^5.0.0"
